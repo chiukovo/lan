@@ -149,7 +149,7 @@
   }
 }
 #toast-container.toast-top-right {
-  top: 40px;
+  top: 80px;
   right: 18px;
 }
 #toast-container > div {
@@ -304,6 +304,51 @@
   display: block;
 }
 #wpuf-form-builder-settings .tab-contents .form-table {
+  margin-top: 0;
+}
+#wpuf-form-builder-payment {
+  position: relative;
+  margin-top: 15px;
+  min-height: 380px;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 170px;
+  border-bottom: 0;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a {
+  width: calc(100% - -1px);
+  margin-left: 0;
+  margin-bottom: .5em;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  font-weight: 400;
+  font-size: 13px;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a.nav-tab-active {
+  border-right-color: #f1f1f1;
+}
+#wpuf-form-builder-payment .nav-tab-wrapper a:focus {
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+#wpuf-form-builder-payment .tab-contents {
+  margin-left: 170px;
+  border-left: 1px solid #cccccc;
+  padding-left: 20px;
+}
+#wpuf-form-builder-payment .tab-contents > .group {
+  display: none;
+  height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+#wpuf-form-builder-payment .tab-contents > .group.active {
+  display: block;
+}
+#wpuf-form-builder-payment .tab-contents .form-table {
   margin-top: 0;
 }
 #wpuf-form-builder-container {
@@ -548,7 +593,7 @@
 }
 .wpuf-form-builder-field-options .option-field-section-fields {
   margin-top: 15px;
-  max-height: 150vh;
+  height: auto;
   opacity: 1;
 }
 .wpuf-form-builder-field-options .panel-field-opt {
@@ -863,14 +908,60 @@ ul.wpuf-form li .wpuf-password-field:after {
   padding: 0;
 }
 .wpuf-form-template-modal .content ul li {
-  float: left;
-  width: 31.292517006803%;
-  border: 1px solid #e4e4e4;
-  padding: 0;
-  margin-left: 3.0612244897959%;
-  margin-bottom: 30px;
+  text-align: center;
+  min-height: 280px;
+  width: 220px;
+  border: 0px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  min-height: 120px;
+  border-radius: 3px;
+  margin-bottom: 30px;
+  float: left;
+  margin-left: 30px;
+}
+.wpuf-form-template-modal .content ul li h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0px;
+  background: #1E87B6;
+  padding: 13px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #fff;
+  border-radius: 3px 3px 0px 0px;
+  text-align: left;
+}
+.wpuf-form-template-modal .content ul li .title {
+  font-size: 17px;
+  margin: 0 0 10px 0;
+  line-height: 23px;
+}
+.wpuf-form-template-modal .content ul li.template-active img,
+.wpuf-form-template-modal .content ul li.template-inactive img {
+  max-width: 100%;
+  max-height: 211px;
+}
+.wpuf-form-template-modal .content ul li .form-middle-text {
+  margin-top: 70px;
+  font-size: 15px;
+}
+.wpuf-form-template-modal .content ul li .form-middle-text span.dashicons {
+  font-size: 45px;
+  color: #ddd;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  display: block;
+}
+.wpuf-form-template-modal .content ul li .form-create-overlay {
+  position: absolute;
+  display: none;
+}
+.wpuf-form-template-modal .content ul li .form-create-overlay a.button.button-primary {
+  width: 200px;
+  min-height: 30px;
+  padding: 0;
+  color: #fff;
 }
 .wpuf-form-template-modal .content ul li.on-progress:before {
   content: "\f463";
@@ -888,7 +979,22 @@ ul.wpuf-form li .wpuf-password-field:after {
   opacity: 0.2;
 }
 .wpuf-form-template-modal .content ul li:hover {
-  background: #F5F5F5;
+  background: #fff;
+}
+.wpuf-form-template-modal .content ul li:hover .form-create-overlay {
+  animation: weFormsFadeIn .25s;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  color: #fff;
+  border-radius: 3px;
 }
 .wpuf-form-template-modal .content ul li a {
   text-decoration: none;
@@ -903,7 +1009,7 @@ ul.wpuf-form li .wpuf-password-field:after {
   line-height: 23px;
 }
 .wpuf-form-template-modal .content ul li .description {
-  color: #888;
+  color: #fff;
 }
 .wpuf-form-template-modal .content ul li:nth-child(3n+1) {
   margin-left: 0;
@@ -1152,4 +1258,115 @@ ul.wpuf-form li .wpuf-password-field:after {
 }
 .wpuf-integrations-wrap .wpuf-integration .wpuf-integration-settings fieldset legend {
   padding: 0 10px;
+}
+#wpuf-toggle-field-options,
+#wpuf-toggle-show-form {
+  background: #008ec2;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 0;
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  float: right;
+  width: 100%;
+  padding: 10px;
+  display: none;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #wpuf-form-builder {
+    width: 100% !important;
+    right: 0;
+  }
+  #wpuf-form-builder > fieldset {
+    margin-left: 36px;
+  }
+  #wpuf-form-builder #wpuf-form-builder-container #builder-stage {
+    margin-right: 290px;
+  }
+  #wpuf-form-builder #wpuf-form-builder-container #builder-form-fields {
+    width: 290px;
+  }
+  .panel-form-field-group .button {
+    font-size: 11px;
+  }
+}
+@media (max-width: 767px) {
+  #wpuf-form-builder-container #builder-stage section {
+    padding: 8px;
+  }
+  #wpuf-form-builder-container #builder-stage section #form-preview {
+    padding: 5px;
+  }
+  #wpuf-form-builder {
+    width: 100% !important;
+    right: 0;
+  }
+  #wpuf-form-builder #wpuf-toggle-field-options {
+    display: inline-block;
+  }
+  #wpuf-form-builder #wpuf-form-builder-container #builder-stage {
+    width: 100%;
+    margin-right: 0;
+  }
+  #wpuf-form-builder-container #builder-form-fields {
+    width: 100%;
+    display: none;
+  }
+  #wpuf-form-builder-container #builder-form-fields.show {
+    display: block;
+  }
+  #wpuf-form-builder h2.nav-tab-wrapper .nav-tab {
+    margin: 10px 6px 0 0;
+    border-bottom: 1px solid #ccc;
+    font-size: 10px;
+  }
+  #wpuf-form-builder h2.nav-tab-wrapper span.pull-right {
+    margin-top: 10px;
+    margin-left: 5px;
+  }
+  #wpuf-form-builder #wpuf-toggle-show-form.show {
+    display: block;
+  }
+  #wpuf-form-builder #wpuf-toggle-field-options.hide {
+    display: none;
+  }
+  #wpuf-form-builder-settings .nav-tab-wrapper {
+    width: 120px;
+  }
+  #wpuf-form-builder-settings .tab-contents {
+    margin-left: 120px;
+  }
+  #wpuf-form-builder-settings .form-table td select {
+    height: 34px;
+  }
+  #wpuf-form-builder-settings input[type="checkbox"] {
+    height: 18px;
+    width: 18px;
+  }
+  #wpbody #wpuf-form-builder-settings input,
+  #wpbody #wpuf-form-builder-settings select,
+  #wpbody #wpuf-form-builder-settings .form-table td textarea,
+  #wpuf-form-builder-settings .form-table td p,
+  #wpuf-form-builder-settings .form-table,
+  #wpuf-form-builder-settings .form-table td,
+  #wpuf-form-builder-settings .form-table th,
+  #wpuf-form-builder-settings .wp-picker-container .wp-color-result.button {
+    font-size: 12px;
+  }
+  #wpuf-form-builder-settings input[type="checkbox"]:checked:before {
+    margin: -6px -8px;
+  }
+  ul.wpuf-form li.country_list,
+  ul.wpuf-form li.address_field {
+    max-width: 200px;
+  }
+  .wpuf-form-template-modal .content ul li {
+    margin-left: 0;
+  }
+  .wpuf-form-template-modal .modal-header h2 small {
+    display: none;
+  }
 }

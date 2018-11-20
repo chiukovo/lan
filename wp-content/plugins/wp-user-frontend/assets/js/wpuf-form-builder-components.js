@@ -17,7 +17,7 @@ Vue.component('builder-stage', {
 
         hidden_fields: function () {
             return this.$store.state.form_fields.filter(function (item) {
-                return 'hidden' === item.input_type;
+                return 'custom_hidden_field' === item.template;
             });
         },
 
@@ -123,11 +123,6 @@ Vue.component('builder-stage', {
                 cancelButtonClass: 'btn btn-danger',
             }).then(function () {
                 self.$store.commit('delete_form_field_element', index);
-                swal(
-                    'Deleted!',
-                    'The field has been deleted.',
-                    'success'
-                );
             }, function() {
 
             });
@@ -232,6 +227,47 @@ Vue.component('field-html_help_text', {
     mixins: [
         wpuf_mixins.option_field_mixin
     ],
+});
+
+Vue.component('field-multiselect', {
+    template: '#tmpl-wpuf-field-multiselect',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    computed: {
+        value: {
+            get: function () {
+                return this.editing_form_field[this.option_field.name];
+            },
+
+            set: function (value) {
+                this.$store.commit('update_editing_form_field', {
+                    editing_field_id: this.editing_form_field.id,
+                    field_name: this.option_field.name,
+                    value: value
+                });
+            }
+        }
+    },
+
+    mounted: function () {
+        this.bind_selectize();
+    },
+
+    methods: {
+        bind_selectize: function () {
+            var self = this;
+
+            $(this.$el).find('.term-list-selector').selectize({}).on('change', function () {
+                var data = $(this).val();
+
+                self.value = data;
+            });
+        },
+    },
+
 });
 
 /**
@@ -377,7 +413,8 @@ Vue.component('field-options', {
     data: function() {
         return {
             show_basic_settings: true,
-            show_advanced_settings: false
+            show_advanced_settings: false,
+            show_quiz_settings: false
         };
     },
 
@@ -385,6 +422,7 @@ Vue.component('field-options', {
         editing_field_id: function () {
             this.show_basic_settings = true;
             this.show_advanced_settings = false;
+            this.show_quiz_settings = false;
 
             return parseInt(this.$store.state.editing_field_id);
         },
@@ -423,6 +461,12 @@ Vue.component('field-options', {
             });
         },
 
+        quiz_settings: function () {
+            return this.settings.filter(function (item) {
+                return 'quiz' === item.section;
+            });
+        },
+
         form_field_type_title: function() {
             var template = this.editing_form_field.template;
 
@@ -431,6 +475,16 @@ Vue.component('field-options', {
             }
 
             return this.$store.state.field_settings[template].title;
+        },
+
+        form_settings: function () {
+            return this.$store.state.settings;
+        }
+    },
+
+    watch: {
+        form_settings: function () {
+            return this.$store.state.settings;
         }
     }
 });
@@ -573,6 +627,63 @@ Vue.component('field-textarea', {
     },
 });
 
+Vue.component('field-visibility', {
+    template: '#tmpl-wpuf-field-visibility',
+
+    mixins: [
+        wpuf_mixins.option_field_mixin
+    ],
+
+    computed: {
+        selected: {
+            get: function () {
+
+                return this.editing_form_field[this.option_field.name].selected;
+            },
+
+            set: function (value) {
+
+                this.$store.commit('update_editing_form_field', {
+                    editing_field_id: this.editing_form_field.id,
+                    field_name: this.option_field.name,
+                    value: {
+                        selected: value,
+                        choices: [],
+                    }
+                });
+            }
+        },
+
+        choices: {
+            get: function () {
+                return this.editing_form_field[this.option_field.name].choices;
+            },
+
+            set: function (value) {
+
+                this.$store.commit('update_editing_form_field', {
+                    editing_field_id: this.editing_form_field.id,
+                    field_name: this.option_field.name,
+                    value: {
+                        selected: this.selected,
+                        choices: value,
+                    }
+                });
+            }
+        },
+
+    },
+
+    methods: {
+
+    },
+
+    watch: {
+    	selected: function (new_val) {
+            this.update_value('selected', new_val);
+        }
+    }
+});
 /**
  * Field template: Checkbox
  */
@@ -784,79 +895,6 @@ Vue.component('form-multiple_select', {
     ]
 });
 
-Vue.component('wpuf-cf-form-notification', {
-    template: '#tmpl-wpuf-form-notification',
-    data: function() {
-        return {
-            editing: false,
-            editingIndex: 0,
-        };
-    },
-
-    computed: {
-
-        notifications: function() {
-            return this.$store.state.notifications;
-        },
-
-        hasNotifications: function() {
-            return Object.keys( this.$store.state.notifications ).length;
-        }
-    },
-
-    methods: {
-        addNew: function() {
-            this.$store.commit('addNotification', wpuf_form_builder.defaultNotification);
-        },
-
-        editItem: function(index) {
-            this.editing = true;
-            this.editingIndex = index;
-        },
-
-        editDone: function() {
-            this.editing = false;
-
-            this.$store.commit('updateNotification', {
-                index: this.editingIndex,
-                value: this.notifications[this.editingIndex]
-            });
-
-            jQuery('.advanced-field-wrap').slideUp('fast');
-        },
-
-        deleteItem: function(index) {
-            if ( confirm( 'Are you sure' ) ) {
-                this.editing = false;
-                this.$store.commit( 'deleteNotification', index);
-            }
-        },
-
-        toggelNotification: function(index) {
-            this.$store.commit('updateNotificationProperty', {
-                index: index,
-                property: 'active',
-                value: !this.notifications[index].active
-            });
-        },
-
-        duplicate: function(index) {
-            this.$store.commit('cloneNotification', index);
-        },
-
-        toggleAdvanced: function() {
-            jQuery('.advanced-field-wrap').slideToggle('fast');
-        },
-
-        insertValue: function(type, field, property) {
-            var notification = this.notifications[this.editingIndex],
-                value = ( field !== undefined ) ? '{' + type + ':' + field + '}' : '{' + type + '}';
-
-            notification[property] = notification[property] + value;
-        }
-    }
-});
-
 /**
  * Field Template: Post Content
  */
@@ -979,13 +1017,16 @@ Vue.component('form-taxonomy', {
 
             // selection type and terms
             if (this.field.exclude_type && this.field.exclude) {
-                var filter_ids = this.field.exclude.split(',').map(function (id) {
-                    id = id.trim();
-                    id = parseInt(id);
-                    return id;
-                }).filter(function (id) {
-                    return isFinite(id);
-                });
+
+                if ( this.field.exclude.length > 1 ) {
+                    var filter_ids = this.field.exclude.split(',').map(function (id) {
+                        id = id.trim();
+                        id = parseInt(id);
+                        return id;
+                    }).filter(function (id) {
+                        return isFinite(id);
+                    });
+                }
 
                 terms = terms.filter(function (term) {
 
@@ -1041,6 +1082,10 @@ Vue.component('form-taxonomy', {
         get_term_dropdown_options: function () {
             var self    = this,
                 options = '';
+
+            if ( this.field.type === 'select' ) {
+                options = '<option value="">' + this.field.first + '</option>';
+            }
 
             _.each(self.sorted_terms, function (term) {
                 options += self.get_term_dropdown_options_children(term, 0);
@@ -1104,6 +1149,32 @@ Vue.component('form-taxonomy', {
             }
 
             return li;
+        },
+
+        get_term_checklist_inline: function () {
+            var self      = this,
+                checklist = '';
+
+            _.each(this.sorted_terms, function (term) {
+                checklist += self.get_term_checklist_li_inline(term);
+            });
+
+            return checklist;
+        },
+
+        get_term_checklist_li_inline: function (term) {
+            var self = this,
+                li_inline   = '';
+
+            li_inline += '<label class="wpuf-checkbox-inline"><input type="checkbox"> ' + term.name + '</label>';
+
+            if (term.children.length) {
+                _.each(term.children, function (child_term) {
+                    li_inline += self.get_term_checklist_li_inline(child_term);
+                });
+            }
+
+            return li_inline;
         }
     }
 });
@@ -1153,176 +1224,6 @@ Vue.component('help-text', {
     }
 });
 
-Vue.component('wpuf-integration', {
-    template: '#tmpl-wpuf-integration',
-
-    computed: {
-
-        integrations: function() {
-            return wpuf_form_builder.integrations;
-        },
-
-        hasIntegrations: function() {
-            return Object.keys(this.integrations).length;
-        },
-
-        store: function() {
-            return this.$store.state.integrations;
-        },
-
-        pro_link: function() {
-            return wpuf_form_builder.pro_link;
-        }
-    },
-
-    methods: {
-
-        getIntegration: function(id) {
-            return this.integrations[id];
-        },
-
-        getIntegrationSettings: function(id) {
-            // find settings in store, otherwise take from default integration settings
-            return this.store[id] || this.getIntegration(id).settings;
-        },
-
-        isActive: function(id) {
-            if ( !this.isAvailable(id) ) {
-                return false;
-            }
-
-            return this.getIntegrationSettings(id).enabled === true;
-        },
-
-        isAvailable: function(id) {
-            return ( this.integrations[id] && this.integrations[id].pro ) ? false : true;
-        },
-
-        toggleState: function(id, target) {
-            if ( ! this.isAvailable(id) ) {
-                this.alert_pro_feature( id );
-                return;
-            }
-
-            // toggle the enabled state
-            var settings = this.getIntegrationSettings(id);
-
-            settings.enabled = !this.isActive(id);
-
-            this.$store.commit('updateIntegration', {
-                index: id,
-                value: settings
-            });
-
-            $(target).toggleClass('checked');
-        },
-
-        alert_pro_feature: function (id) {
-            var title = this.getIntegration(id).title;
-
-            swal({
-                title: '<i class="fa fa-lock"></i> ' + title + ' <br>' + this.i18n.is_a_pro_feature,
-                text: this.i18n.pro_feature_msg,
-                type: '',
-                showCancelButton: true,
-                cancelButtonText: this.i18n.close,
-                confirmButtonColor: '#46b450',
-                confirmButtonText: this.i18n.upgrade_to_pro
-            }).then(function (is_confirm) {
-                if (is_confirm) {
-                    window.open(wpuf_form_builder.pro_link, '_blank');
-                }
-
-            }, function() {});
-        },
-
-        showHide: function(target) {
-            $(target).closest('.wpuf-integration').toggleClass('collapsed');
-        },
-    }
-});
-
-Vue.component('wpuf-merge-tags', {
-    template: '#tmpl-wpuf-merge-tags',
-    props: {
-        field: String,
-        filter: {
-            type: String,
-            default: null
-        }
-    },
-
-    data: function() {
-        return {
-            type: null,
-        };
-    },
-
-    mounted: function() {
-
-        // hide if clicked outside
-        $('body').on('click', function(event) {
-            if ( !$(event.target).closest('.wpuf-merge-tag-wrap').length) {
-                $(".wpuf-merge-tags").hide();
-            }
-        });
-    },
-
-    computed: {
-        form_fields: function () {
-            var template = this.filter,
-                fields = this.$store.state.form_fields;
-
-            if (template !== null) {
-                return fields.filter(function(item) {
-                    return item.template === template;
-                });
-            }
-
-            // remove the action/hidden fields
-            return fields.filter(function(item) {
-                return !_.contains( [ 'action_hook', 'custom_hidden_field'], item.template );
-            });
-        },
-    },
-
-    methods: {
-        toggleFields: function(event) {
-            $(event.target).parent().siblings('.wpuf-merge-tags').toggle('fast');
-        },
-
-        insertField: function(type, field) {
-            this.$emit('insert', type, field, this.field);
-        }
-    }
-});
-Vue.component('wpuf-modal', {
-    template: '#tmpl-wpuf-modal',
-    props: {
-        show: Boolean,
-        onClose: Function
-    },
-
-    mounted: function () {
-        var self = this;
-
-        $('body').on( 'keydown', function(e) {
-            if (self.show && e.keyCode === 27) {
-                self.closeModal();
-            }
-        });
-    },
-
-    methods: {
-        closeModal: function() {
-            if ( typeof this.onClose !== 'undefined' ) {
-                this.onClose();
-            } else {
-                this.$emit('hideModal');
-            }
-        }
-    }
-});
 Vue.component('text-editor', {
     template: '#tmpl-wpuf-text-editor',
 

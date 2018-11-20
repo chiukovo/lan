@@ -27,13 +27,11 @@ class WPUF_Frontend_Dashboard {
             <?php //echo $custom_css = wpuf_get_option( 'custom_css', 'wpuf_general' ); ?>
         </style>
         <?php
-
-        extract( shortcode_atts( array('post_type' => 'post'), $atts ) );
-
+        $attributes =  shortcode_atts( array( 'form_id'=>'off', 'post_type' => 'post', 'category' =>'off', 'featured_image' => 'default', 'meta' => 'off', 'excerpt' =>'off', 'payment_column' => 'on' ), $atts ) ;
         ob_start();
 
         if ( is_user_logged_in() ) {
-            $this->post_listing( $post_type );
+            $this->post_listing( $attributes );
         } else {
             $message = wpuf_get_option( 'un_auth_msg', 'wpuf_dashboard' );
             wpuf_load_template( 'unauthorized.php', array( 'message' => $message ) );
@@ -51,8 +49,9 @@ class WPUF_Frontend_Dashboard {
      * @global object $wpdb
      * @global object $userdata
      */
-    function post_listing( $post_type ) {
+    function post_listing( $attributes ) {
         global $post;
+        extract ( $attributes );
 
         $pagenum = isset( $_GET['pagenum'] ) ? intval( $_GET['pagenum'] ) : 1;
 
@@ -63,20 +62,34 @@ class WPUF_Frontend_Dashboard {
 
         //show delete success message
         if ( isset( $_GET['msg'] ) && $_GET['msg'] == 'deleted' ) {
-            echo '<div class="success">' . __( 'Post Deleted', 'wpuf' ) . '</div>';
+            echo '<div class="success">' . __( 'Post Deleted', 'wp-user-frontend' ) . '</div>';
         }
-
+        $post_type  = explode( ",", $post_type );
         $args = array(
             'author'         => get_current_user_id(),
             'post_status'    => array('draft', 'future', 'pending', 'publish', 'private'),
             'post_type'      => $post_type,
             'posts_per_page' => wpuf_get_option( 'per_page', 'wpuf_dashboard', 10 ),
-            'paged'          => $pagenum
+            'paged'          => $pagenum,
         );
 
+        if ( isset($attributes['form_id']) && $attributes['form_id'] != 'off' ) {
+            $args['meta_query'] =  array(
+                array(
+                    'key'     => '_wpuf_form_id',
+                    'value'   => $attributes['form_id'],
+                    'compare' => 'IN',
+                )
+            );
+        }
+
         $original_post   = $post;
-        $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args ) );
-        $post_type_obj   = get_post_type_object( $post_type );
+        $dashboard_query = new WP_Query( apply_filters( 'wpuf_dashboard_query', $args, $attributes ) );
+        $post_type_obj   = array();
+
+        foreach ($post_type as $key => $value) {
+           $post_type_obj[$value] = get_post_type_object( $value );
+        }
 
         wpuf_load_template( 'dashboard.php', array(
             'post_type'       => $post_type,
@@ -84,7 +97,13 @@ class WPUF_Frontend_Dashboard {
             'dashboard_query' => $dashboard_query,
             'post_type_obj'   => $post_type_obj,
             'post'            => $post,
-            'pagenum'         => $pagenum
+            'pagenum'         => $pagenum,
+            'category'        => $category,
+            'featured_image'  => $featured_image,
+            'form_id'         => $form_id,
+            'meta'            => $meta,
+            'excerpt'         => $excerpt,
+            'payment_column'  => $payment_column
         ) );
 
         wp_reset_postdata();
@@ -101,11 +120,11 @@ class WPUF_Frontend_Dashboard {
         if ( wpuf_get_option( 'show_user_bio', 'wpuf_dashboard', 'on' ) == 'on' ) {
             ?>
             <div class="wpuf-author">
-                <h3><?php _e( 'Author Info', 'wpuf' ); ?></h3>
+                <h3><?php _e( 'Author Info', 'wp-user-frontend' ); ?></h3>
                 <div class="wpuf-author-inside odd">
                     <div class="wpuf-user-image"><?php echo get_avatar( $userdata->user_email, 80 ); ?></div>
                     <div class="wpuf-author-body">
-                        <p class="wpuf-user-name"><a href="<?php echo get_author_posts_url( $userdata->ID ); ?>"><?php printf( esc_attr__( '%s', 'wpuf' ), $userdata->display_name ); ?></a></p>
+                        <p class="wpuf-user-name"><a href="<?php echo get_author_posts_url( $userdata->ID ); ?>"><?php printf( esc_attr__( '%s', 'wp-user-frontend' ), $userdata->display_name ); ?></a></p>
                         <p class="wpuf-author-info"><?php echo $userdata->description; ?></p>
                     </div>
                 </div>
@@ -131,13 +150,13 @@ class WPUF_Frontend_Dashboard {
         $maybe_delete = get_post( $_REQUEST['pid'] );
 
         if ( ($maybe_delete->post_author == $userdata->ID) || current_user_can( 'delete_others_pages' ) ) {
-            wp_delete_post( $_REQUEST['pid'] );
+            wp_trash_post( $_REQUEST['pid'] );
 
             //redirect
             $redirect = add_query_arg( array('msg' => 'deleted'), get_permalink() );
             wp_redirect( $redirect );
         } else {
-            echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wpuf' ) . '</div>';
+            echo '<div class="error">' . __( 'You are not the post author. Cheeting huh!', 'wp-user-frontend' ) . '</div>';
         }
     }
 

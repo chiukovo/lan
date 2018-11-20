@@ -9,8 +9,9 @@ class WPUF_Post_Form_Template_WooCommerce extends WPUF_Post_Form_Template {
         parent::__construct();
 
         $this->enabled     = class_exists( 'WooCommerce' );
-        $this->title       = __( 'WooCommerce Product', 'wpuf' );
-        $this->description = __( 'Create a simple product form for WooCommerce.', 'wpuf' );
+        $this->title       = __( 'WooCommerce Product', 'wp-user-frontend' );
+        $this->description = __( 'Create a simple product form for WooCommerce.', 'wp-user-frontend' );
+        $this->image       = WPUF_ASSET_URI . '/images/templates/woocommerce.png';
         $this->form_fields = array(
             array(
                 'input_type'  => 'text',
@@ -257,6 +258,7 @@ Edit URL: %editlink%',
         $this->update_reviews( $post_id );
         $this->update_price( $post_id );
         $this->update_gallery_images( $post_id );
+        $this->update_meta( $post_id );
     }
 
     /**
@@ -267,10 +269,15 @@ Edit URL: %editlink%',
      * @return void
      */
     public function update_reviews( $post_id ) {
-        $reviews = get_post_meta( $post_id, 'product_reviews', true );
-        $status  = !empty( $reviews ) ? 'open' : 'close';
+        global $wpdb;
 
-        wp_update_post( array( 'ID' => $post_id, 'comment_status' => 'open' ) );
+        $reviews = get_post_meta( $post_id, 'product_reviews', true );
+        $status  = !empty( $reviews ) ? 'open' : 'closed';
+
+        // wp_update_post( array( 'ID' => $post_id, 'comment_status' => $status ) );
+
+        $comment_sql = "UPDATE {$wpdb->prefix}posts SET comment_status='{$status}' WHERE ID={$post_id} AND post_status='publish' AND post_type='product'";
+        $wpdb->get_results( $comment_sql );
     }
 
     /**
@@ -300,6 +307,30 @@ Edit URL: %editlink%',
      */
     public function update_gallery_images( $post_id ) {
         $images = get_post_meta( $post_id, '_product_image' );
-        update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+        if ( !empty( $images ) ) {
+            update_post_meta( $post_id, '_product_image_gallery', implode(',', $images) );
+        }
+    }
+
+    /**
+     *  Fix for visibily not updating from frontend post
+     *
+     * @param  int $post_id
+     * @return void
+     */
+    public function update_meta( $post_id ) {
+
+        //keep backwards compatible
+        if ( version_compare( WC_VERSION, '2.7', '<' ) ) {
+            return;
+        }
+
+        $visibility = get_post_meta( $post_id, '_visibility', true );
+
+        $product = wc_get_product( $post_id );
+        if ( !empty( $visibility ) ) {
+            $product->set_catalog_visibility( $visibility );
+        }
+        $product->save();
     }
 }

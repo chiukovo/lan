@@ -31,7 +31,7 @@
 		},
 
         packAlert : function () {
-            alert( 'Please Cancel Your Currently Active Pack first ! ' );
+            alert( wpuf_subscription.pack_notice );
         },
 
         showPackDropdown: function(e) {
@@ -58,17 +58,29 @@
         },
 
         deletePack: function(e){
-            var userid = $(e.target).attr('data-userid');
+            var self = $(this),
+                wrap = self.parents('.wpuf-user-subscription'),
+                sub_dropdown = wrap.find('.wpuf-pack-dropdown'),
+                selected_sub = wrap.find( '#wpuf_sub_pack' ),
+                userid = $(e.target).attr('data-userid'),
+                packid = $(e.target).attr('data-packid');
+
+            wrap.find('.wpuf-delete-pack-btn').attr('disabled', true);
+            wrap.css('opacity', 0.5);
             $.post(
                 ajaxurl,
                 {
                     'action' : 'wpuf_delete_user_package',
-                    'userid' : userid
+                    'userid' : userid,
+                    'packid' : packid
                 },
                 function(data){
                     if(data){
+                        wrap.css( 'opacity', 1 );
                         $('.wpuf-user-sub-info').remove();
                         $(e.target).remove();
+                        selected_sub.val(-1);
+                        sub_dropdown.show();
                     }
                 }
             );
@@ -116,12 +128,7 @@
                 }
 
             });
-
-
-
         },
-
-
 
         couponShow: function(e) {
 
@@ -135,8 +142,6 @@
 
         },
 
-
-
         couponApply: function(e) {
 
             e.preventDefault();
@@ -149,7 +154,7 @@
 
             if ( coupon === '' ) {
 
-                $('.wpuf-subscription-error').html('Please enter a coupon code!');
+                $('.wpuf-subscription-error').html( wpuf_frontend.coupon_error );
                 return;
 
             }
@@ -166,8 +171,6 @@
 
                 };
 
-
-
             if ( self.attr('disabled') === 'disabled' ) {
 
                 //return;
@@ -178,15 +181,11 @@
 
             coupon_field.addClass('wpuf-coupon-field-spinner');
 
-
-
             $.post( wpuf_frontend.ajaxurl, data, function( res ) {
 
                 coupon_field.removeClass('wpuf-coupon-field-spinner');
 
                 if ( res.success ) {
-
-
 
                     $('.wpuf-pack-inner' ).html( res.data.append_data );
 
@@ -208,25 +207,15 @@
 
         },
 
-
-
 		showSubscriptionRecurring: function() {
-
-
 
             var self = $(this),
 
-            	wrap = self.parents('table.form-table'),
-
+                wrap = self.parents('table.form-table'),
                 pack_child = wrap.find('.wpuf-recurring-child'),
-
-                trial_checkbox = wrap.find( 'input#wpuf-trial-status'),
-
+                trial_checkbox = wrap.find('input#wpuf-trial-status'),
                 trial_child = wrap.find('.wpuf-trial-child'),
-
                 expire_field = wrap.find('.wpuf-subcription-expire');
-
-
 
             if ( self.is(':checked') ) {
 
@@ -251,8 +240,6 @@
             }
 
         },
-
-
 
         showSubscriptionPack: function() {
 

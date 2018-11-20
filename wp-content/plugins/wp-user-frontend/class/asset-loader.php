@@ -21,13 +21,16 @@ class WPUF_Assets {
         $scheme = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
+        if ( !empty( $api_key ) ) {
+            wp_register_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key=' . $api_key, array(), null );
+        }
         if ( isset ( $post->ID ) ) {
             ?>
             <script type="text/javascript" id="wpuf-language-script">
                 var error_str_obj = {
-                    'required' : '<?php esc_attr_e( 'is required', 'wpuf' ); ?>',
-                    'mismatch' : '<?php esc_attr_e( 'does not match', 'wpuf' ); ?>',
-                    'validation' : '<?php esc_attr_e( 'is not valid', 'wpuf' ); ?>'
+                    'required' : '<?php esc_attr_e( 'is required', 'wp-user-frontend' ); ?>',
+                    'mismatch' : '<?php esc_attr_e( 'does not match', 'wp-user-frontend' ); ?>',
+                    'validation' : '<?php esc_attr_e( 'is not valid', 'wp-user-frontend' ); ?>'
                 }
             </script>
             <?php
@@ -39,24 +42,29 @@ class WPUF_Assets {
 
         wp_localize_script( 'wpuf-form', 'wpuf_frontend', array(
             'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-            'error_message' => __( 'Please fix the errors to proceed', 'wpuf' ),
+            'error_message' => __( 'Please fix the errors to proceed', 'wp-user-frontend' ),
             'nonce'         => wp_create_nonce( 'wpuf_nonce' ),
-            'word_limit'    => __( 'Word limit reached', 'wpuf' )
+            'word_limit'    => __( 'Word limit reached', 'wp-user-frontend' ),
+            'cancelSubMsg'  => __( 'Are you sure you want to cancel your current subscription ?', 'wp-user-frontend' ),
+            'delete_it'     => __( 'Yes', 'wp-user-frontend' ),
+            'cancel_it'     => __( 'No', 'wp-user-frontend' ),
         ) );
 
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
-            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+            'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'plupload'   => array(
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
+                'filters'          => array(array('title' => __( 'Allowed Files', 'wp-user-frontend' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
-                'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
-                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
-                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
+                'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' )
             )
         ));
 
@@ -77,6 +85,6 @@ class WPUF_Assets {
      */
     public function register_styles() {
         wp_register_style( 'wpuf-css', WPUF_ASSET_URI . '/css/frontend-forms.css' );
-        wp_register_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-www.thefox.cn.css' );
+        wp_register_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
     }
 }

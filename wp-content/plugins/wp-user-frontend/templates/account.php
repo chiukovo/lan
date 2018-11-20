@@ -4,8 +4,15 @@
             <?php
                 if ( is_user_logged_in() ) {
                     foreach ( $sections as $section ) {
-                        if ( 'subscription' === $section['slug'] && wpuf_get_option( 'charge_posting', 'wpuf_payment' ) != 'yes' ) {
-                            continue;
+                        if ( 'subscription' == $section['slug']) {
+                            if ( 'off' == wpuf_get_option( 'show_subscriptions', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+                                continue;
+                            }
+                        }
+                        if ( 'billing-address' == $section['slug']) {
+                            if ( 'off' == wpuf_get_option( 'show_billing_address', 'wpuf_my_account', 'on' ) || 'on' != wpuf_get_option( 'enable_payment', 'wpuf_payment', 'on' ) ) {
+                                continue;
+                            }
                         }
                         echo sprintf(
                             '<li><a href="%s">%s</a></li>',

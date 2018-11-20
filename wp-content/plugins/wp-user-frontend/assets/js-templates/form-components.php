@@ -1,7 +1,7 @@
 <script type="text/x-template" id="tmpl-wpuf-builder-stage">
-<div id="form-preview-stage">
+<div id="form-preview-stage" class="wpuf-style">
     <h4 v-if="!form_fields.length" class="text-center">
-        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wpuf' ) ?>
+        <?php _e( 'Add fields by dragging the fields from the right sidebar to this area.', 'wp-user-frontend' ) ?>
     </h4>
 
     <ul :class="['wpuf-form', 'sortable-list', 'form-label-' + label_type]">
@@ -10,7 +10,8 @@
             :key="field.id"
             :class="[
                 'field-items', 'wpuf-el', field.name, field.css, 'form-field-' + field.template,
-                ('hidden' === field.input_type) ? 'hidden-field' : '',
+                field.width ? 'field-size-' + field.width : '',
+                ('custom_hidden_field' === field.template) ? 'hidden-field' : '',
                 parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : ''
             ]"
             :data-index="index"
@@ -26,7 +27,7 @@
 
             <div v-if="is_pro_feature(field.template)" class="stage-pro-alert">
                 <label class="wpuf-pro-text-alert">
-                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wpuf' ); ?></a>
+                    <a :href="pro_link" target="_blank"><strong>{{ get_field_name(field.template) }}</strong> <?php _e( 'is available in Pro Version', 'wp-user-frontend' ); ?></a>
                 </label>
             </div>
 
@@ -50,14 +51,14 @@
     </ul><!-- .wpuf-form -->
 
     <div v-if="hidden_fields.length" class="hidden-field-list">
-        <h4><?php _e( 'Hidden Fields', 'wpuf' ); ?></h4>
+        <h4><?php _e( 'Hidden Fields', 'wp-user-frontend' ); ?></h4>
 
         <ul class="wpuf-form">
             <li
                 v-for="(field, index) in hidden_fields"
                 :class="['field-items', parseInt(editing_form_id) === parseInt(field.id) ? 'current-editing' : '']"
             >
-                <strong><?php _e('key', 'wpuf'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wpuf' ); ?></strong>: {{ field.meta_value }}
+                <strong><?php _e('key', 'wp-user-frontend'); ?></strong>: {{ field.name }} | <strong><?php _e( 'value', 'wp-user-frontend' ); ?></strong>: {{ field.meta_value }}
 
                 <div class="control-buttons">
                     <p>
@@ -93,12 +94,28 @@
 <div class="panel-field-opt panel-field-html-help-text" v-html="option_field.text"></div>
 </script>
 
+<script type="text/x-template" id="tmpl-wpuf-field-multiselect">
+<div class="panel-field-opt panel-field-opt-select">
+    <label v-if="option_field.title">
+        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </label>
+
+    <select
+        :class="['term-list-selector']"
+        v-model="value"
+        multiple
+    >
+        <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
+    </select>
+</div>
+</script>
+
 <script type="text/x-template" id="tmpl-wpuf-field-option-data">
 <div class="panel-field-opt panel-field-opt-text">
     <label class="clearfix">
         {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
         <span class="pull-right">
-            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wpuf' ); ?>
+            <input type="checkbox" v-model="show_value"> <?php _e( 'Show values', 'wp-user-frontend' ); ?>
         </span>
     </label>
 
@@ -109,11 +126,11 @@
             <div class="sort-handler">&nbsp;</div>
 
             <div class="label">
-                <?php _e( 'Label', 'wpuf' ); ?>
+                <?php _e( 'Label', 'wp-user-frontend' ); ?>
             </div>
 
             <div v-if="show_value" class="value">
-                <?php _e( 'Value', 'wpuf' ) ?>
+                <?php _e( 'Value', 'wp-user-frontend' ) ?>
             </div>
 
             <div class="action-buttons">&nbsp;</div>
@@ -161,7 +178,7 @@
         </li>
     </ul>
 
-    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wpuf' ); ?></a>
+    <a v-if="!option_field.is_multiple && selected" href="#clear" @click.prevent="clear_selection"><?php _e( 'Clear Selection', 'wp-user-frontend' ); ?></a>
 </div>
 </script>
 
@@ -169,7 +186,7 @@
 <div class="panel-field-opt panel-field-opt-pro-feature">
     <label>{{ option_field.title }}</label><br>
     <label class="wpuf-pro-text-alert">
-        <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wpuf' ); ?></a>
+        <a :href="pro_link" target="_blank"><?php _e( 'Available in Pro Version', 'wp-user-frontend' ); ?></a>
     </label>
 </div>
 </script>
@@ -219,6 +236,8 @@
                 </div>
             </transition>
         </div>
+
+        <?php do_action( 'wpuf_builder_field_options' ); ?>
     </div>
 
 </div>
@@ -247,7 +266,7 @@
     </label>
 
     <select class="opt-select-element" v-model="value">
-        <option value=""><?php _e( 'Select an option', 'wpuf' ); ?></option>
+        <option value=""><?php _e( 'Select an option', 'wp-user-frontend' ); ?></option>
         <option v-for="(option, key) in option_field.options" :value="key">{{ option }}</option>
     </select>
 </div>
@@ -298,6 +317,69 @@
     </label>
 </div>
 </script>
+
+<script type="text/x-template" id="tmpl-wpuf-field-visibility">
+<div class="panel-field-opt panel-field-opt-radio">
+    <label v-if="option_field.title">
+        {{ option_field.title }} <help-text v-if="option_field.help_text" :text="option_field.help_text"></help-text>
+    </label>
+
+    <ul :class="[option_field.inline ? 'list-inline' : '']">
+        <li v-for="(option, key) in option_field.options">
+            <label>
+                <input type="radio" :value="key" v-model="selected"> {{ option }}
+            </label>
+        </li>
+    </ul>
+
+    <div v-if="'logged_in' === selected" class="condiotional-logic-container">
+
+    	<?php $roles = get_editable_roles() ?>
+
+    	<ul>
+			<?php
+				foreach ($roles as $role => $value) {
+
+					$role_name = $value['name'];
+
+					$output  = "<li>";
+					$output .= "<label><input type='checkbox' v-model='choices' value='{$role}'> {$role_name} </label>";
+					$output .= "</li>";
+
+					echo $output;
+
+				}
+			?>
+	    </ul>
+    </div>
+
+    <div v-if="'subscribed_users' === selected" class="condiotional-logic-container">
+
+    	<ul>
+    		<?php
+
+                if ( class_exists( 'WPUF_Subscription' ) ) {
+                    $subscriptions  = WPUF_Subscription::init()->get_subscriptions();
+
+                    if ( $subscriptions ) {
+                        foreach ($subscriptions as $pack) {
+
+                            $output  = "<li>";
+                            $output .= "<label><input type='checkbox' v-model='choices' value='{$pack->ID}' > {$pack->post_title} </label>";
+                            $output .= "</li>";
+
+                            echo $output;
+
+                        }
+                    } else {
+                        _e( 'No subscription plan found.', 'wp-user-frontend' );
+                    }
+                }
+            ?>
+    	</ul>
+
+    </div>
+</div></script>
 
 <script type="text/x-template" id="tmpl-wpuf-form-checkbox_field">
 <div class="wpuf-fields">
@@ -372,7 +454,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector" href="#">
-                <?php _e( 'Select Image', 'wpuf' ); ?>
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>
@@ -438,7 +525,12 @@
     <div :id="'wpuf-img_label-' + field.id + '-upload-container'">
         <div class="wpuf-attachment-upload-filelist" data-type="file" data-required="yes">
             <a class="button file-selector wpuf_img_label_148" href="#">
-                <?php _e( 'Select Image', 'wpuf' ); ?>
+                <template v-if="field.button_label === ''">
+                    <?php _e( 'Select Image', 'wp-user-frontend' ); ?>
+                </template>
+                <template v-else>
+                    {{ field.button_label }}
+                </template>
             </a>
         </div>
     </div>
@@ -467,128 +559,11 @@
 </div>
 </script>
 
-<script type="text/x-template" id="tmpl-wpuf-form-notification">
-<div>
-    <!-- <pre>{{ notifications.length }}</pre> -->
-    <a href="#" class="button button-secondary add-notification" v-on:click.prevent="addNew"><span class="dashicons dashicons-plus-alt"></span> <?php _e( 'Add Notification', 'best-contact-form' ); ?></a>
-
-    <div :class="[editing ? 'editing' : '', 'notification-wrap']">
-    <!-- notification-wrap -->
-
-        <div class="notification-table-wrap">
-            <table class="wp-list-table widefat fixed striped posts wpuf-cf-notification-table">
-                <thead>
-                    <tr>
-                        <th class="col-toggle">&nbsp;</th>
-                        <th class="col-name"><?php _e( 'Name', 'best-contact-form' ); ?></th>
-                        <th class="col-subject"><?php _e( 'Subject', 'best-contact-form' ); ?></th>
-                        <th class="col-action">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(notification, index) in notifications">
-                        <td class="col-toggle">
-                            <a href="#" v-on:click.prevent="toggelNotification(index)">
-                                <img v-if="notification.active" src="<?php echo WPUF_ASSET_URI; ?>/images/active.png" width="24" alt="status">
-                                <img v-else src="<?php echo WPUF_ASSET_URI; ?>/images/inactive.png" width="24" alt="status">
-                            </a>
-                        </td>
-                        <td class="col-name"><a href="#" v-on:click.prevent="editItem(index)">{{ notification.name }}</a></td>
-                        <td class="col-subject">{{ notification.subject }}</td>
-                        <td class="col-action">
-                            <a href="#" v-on:click.prevent="duplicate(index)" title="<?php esc_attr_e( 'Duplicate', 'best-contact-form' ); ?>"><span class="dashicons dashicons-admin-page"></span></a>
-                            <a href="#" v-on:click.prevent="editItem(index)" title="<?php esc_attr_e( 'Settings', 'best-contact-form' ); ?>"><span class="dashicons dashicons-admin-generic"></span></a>
-                        </td>
-                    </tr>
-                    <tr v-if="!notifications.length">
-                        <td colspan="4"><?php _e( 'No notifications found', 'best-contact-form' ); ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div><!-- .notification-table-wrap -->
-
-        <div class="notification-edit-area" v-if="notifications[editingIndex]">
-
-            <div class="notification-head">
-                <input type="text" name="" v-model="notifications[editingIndex].name" v-on:keyup.enter="editDone()" value="Admin Notification">
-            </div>
-
-            <div class="form-fields">
-                <div class="notification-row">
-                    <div class="row-one-half notification-field first">
-                        <label for="notification-title"><?php _e( 'To', 'best-contact-form' ); ?></label>
-                        <input type="text" v-model="notifications[editingIndex].to">
-                        <wpuf-merge-tags filter="email_address" v-on:insert="insertValue" field="to"></wpuf-merge-tags>
-                    </div>
-
-                    <div class="row-one-half notification-field">
-                        <label for="notification-title"><?php _e( 'Reply To', 'best-contact-form' ); ?></label>
-                        <input type="email" v-model="notifications[editingIndex].replyTo">
-                        <wpuf-merge-tags filter="email_address" v-on:insert="insertValue" field="replyTo"></wpuf-merge-tags>
-                    </div>
-                </div>
-
-                <div class="notification-row notification-field">
-                    <label for="notification-title"><?php _e( 'Subject', 'best-contact-form' ); ?></label>
-                    <input type="text" v-model="notifications[editingIndex].subject">
-                    <wpuf-merge-tags v-on:insert="insertValue" field="subject"></wpuf-merge-tags>
-                </div>
-
-                <div class="notification-row notification-field">
-                    <label for="notification-title"><?php _e( 'Email Message', 'best-contact-form' ); ?></label>
-                    <textarea name="" rows="6" v-model="notifications[editingIndex].message"></textarea>
-                    <wpuf-merge-tags v-on:insert="insertValue" field="message"></wpuf-merge-tags>
-                </div>
-
-                <section class="advanced-fields">
-                    <a href="#" class="field-toggle" v-on:click.prevent="toggleAdvanced()"><span class="dashicons dashicons-arrow-right"></span><?php _e( ' Advanced', 'best-contact-form' ); ?></a>
-
-                    <div class="advanced-field-wrap">
-                        <div class="notification-row">
-                            <div class="row-one-half notification-field first">
-                                <label for="notification-title"><?php _e( 'From Name', 'best-contact-form' ); ?></label>
-                                <input type="text" v-model="notifications[editingIndex].fromName">
-                                <wpuf-merge-tags v-on:insert="insertValue" field="fromName"></wpuf-merge-tags>
-                            </div>
-
-                            <div class="row-one-half notification-field">
-                                <label for="notification-title"><?php _e( 'From Address', 'best-contact-form' ); ?></label>
-                                <input type="email" name="" v-model="notifications[editingIndex].fromAddress">
-                                <wpuf-merge-tags filter="email_address" v-on:insert="insertValue" field="fromAddress"></wpuf-merge-tags>
-                            </div>
-                        </div>
-
-                        <div class="notification-row">
-                            <div class="row-one-half notification-field first">
-                                <label for="notification-title"><?php _e( 'CC', 'best-contact-form' ); ?></label>
-                                <input type="email" name="" v-model="notifications[editingIndex].cc">
-                                <wpuf-merge-tags filter="email_address" v-on:insert="insertValue" field="cc"></wpuf-merge-tags>
-                            </div>
-
-                            <div class="row-one-half notification-field">
-                                <label for="notification-title"><?php _e( 'BCC', 'best-contact-form' ); ?></label>
-                                <input type="email" name="" v-model="notifications[editingIndex].bcc">
-                                <wpuf-merge-tags filter="email_address" v-on:insert="insertValue" field="bcc"></wpuf-merge-tags>
-                            </div>
-                        </div>
-                    </div>
-                </section><!-- .advanced-fields -->
-            </div>
-
-            <div class="submit-area">
-                <a href="#" v-on:click.prevent="deleteItem(editingIndex)" title="<?php esc_attr_e( 'Delete', 'best-contact-form' ); ?>"><span class="dashicons dashicons-trash"></span></a>
-                <button class="button button-secondary" v-on:click.prevent="editDone()"><?php _e( 'Done', 'best-contact-form' ); ?></button>
-            </div>
-        </div><!-- .notification-edit-area -->
-
-    </div><!-- .notification-wrap -->
-</div></script>
-
 <script type="text/x-template" id="tmpl-wpuf-form-post_content">
 <div class="wpuf-fields">
     <div class="wp-media-buttons" v-if="field.insert_image == 'yes'">
         <button type="button" class="button insert-media add_media" data-editor="content">
-            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wpuf' ); ?>
+            <span class="dashicons dashicons-admin-media insert-photo-icon"></span> <?php _e( 'Insert Photo', 'wp-user-frontend' ); ?>
         </button>
     </div>
     <br v-if="field.insert_image == 'yes'" />
@@ -689,16 +664,15 @@
 <script type="text/x-template" id="tmpl-wpuf-form-taxonomy">
 <div class="wpuf-fields">
     <select
-        v-if="'select' === field.type"
         :class="field.name"
-        v-html="get_term_dropdown_options()"
+        v-html ="get_term_dropdown_options()"
     >
     </select>
 
     <div v-if="'ajax' === field.type" class="category-wrap">
         <div>
             <select>
-                <option><?php _e( '— Select —', 'wpuf' ); ?></option>
+                <option><?php _e( '— Select —', 'wp-user-frontend' ); ?></option>
                 <option v-for="term in sorted_terms" :value="term.id">{{ term.name }}</option>
             </select>
         </div>
@@ -714,8 +688,14 @@
     </div>
 
     <div v-if="'checkbox' === field.type" class="category-wrap">
-        <div v-html="get_term_checklist()"></div>
+        <div v-if="'yes' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist_inline()"></div>
+        </div>
+        <div v-else-if="'no' === field.show_inline" class="category-wrap">
+            <div v-html="get_term_checklist()"></div>
+        </div>
     </div>
+    
 
     <input
         v-if="'text' === field.type"
@@ -774,130 +754,6 @@
 
 <script type="text/x-template" id="tmpl-wpuf-help-text">
 <i class="fa fa-question-circle field-helper-text wpuf-tooltip" data-placement="top" :title="text"></i>
-</script>
-
-<script type="text/x-template" id="tmpl-wpuf-integration">
-<div class="wpuf-integrations-wrap">
-
-    <template v-if="hasIntegrations">
-        <div :class="['wpuf-integration', isAvailable(integration.id) ? '' : 'collapsed']" v-for="integration in integrations">
-            <div class="wpuf-integration-header">
-                <div class="wpuf-integration-header-toggle">
-                    <span :class="['wpuf-toggle-switch', 'big', isActive(integration.id) ? 'checked' : '']" v-on:click="toggleState(integration.id, $event.target)"></span>
-                </div>
-                <div class="wpuf-integration-header-label">
-                    <img class="icon" :src="integration.icon" :alt="integration.title">
-                    {{ integration.title }} <span class="label-premium" v-if="!isAvailable(integration.id)"><?php _e( 'Premium Feature', 'best-contact-form' ); ?></span>
-                </div>
-
-                <div class="wpuf-integration-header-actions">
-                    <button type="button" class="toggle-area" v-on:click="showHide($event.target)">
-                        <span class="screen-reader-text"><?php _e( 'Toggle panel', 'best-contact-form' ); ?></span>
-                        <span class="toggle-indicator"></span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="wpuf-integration-settings">
-
-                <div v-if="isAvailable(integration.id)">
-                    <component :is="'wpuf-integration-' + integration.id" :id="integration.id"></component>
-                </div>
-                <div v-else>
-                    <?php _e( 'This feature is available on the premium version only.', 'best-contact-form' ); ?>
-                    <a class="button" :href="pro_link" target="_blank"><?php _e( 'Upgrade to Pro', 'best-contact-form' ); ?></a>
-                </div>
-
-            </div>
-        </div>
-    </template>
-
-    <div v-else>
-        <?php _e( 'No integration found.', 'best-contact-form' ); ?>
-    </div>
-</div></script>
-
-<script type="text/x-template" id="tmpl-wpuf-merge-tags">
-<div class="wpuf-merge-tag-wrap">
-    <a href="#" v-on:click.prevent="toggleFields($event)" class="merge-tag-link" title="<?php echo esc_attr( 'Click to toggle merge tags', 'wpuf' ); ?>"><span class="dashicons dashicons-editor-code"></span></a>
-
-    <!-- <pre>{{ form_fields.length }}</pre> -->
-
-    <div class="wpuf-merge-tags">
-        <div class="merge-tag-section">
-            <div class="merge-tag-head"><?php _e( 'Form Fields', 'wpuf' ); ?></div>
-
-            <ul>
-                <template v-if="form_fields.length">
-                    <li v-for="field in form_fields">
-
-                        <template v-if="field.input_type === 'name'">
-                            <a href="#" v-on:click.prevent="insertField('name-full', field.name);">{{ field.label }}</a>
-                            (
-                            <a href="#" v-on:click.prevent="insertField('name-first', field.name);"><?php _e( 'first', 'wpuf' ); ?></a> |
-                            <a href="#" v-on:click.prevent="insertField('name-middle', field.name);"><?php _e( 'middle', 'wpuf' ); ?></a> |
-                            <a href="#" v-on:click.prevent="insertField('name-last', field.name);"><?php _e( 'last', 'wpuf' ); ?></a>
-                            )
-                        </template>
-
-                        <a v-else href="#" v-on:click.prevent="insertField('field', field.name);">{{ field.label }}</a>
-
-                    </li>
-                </template>
-                <li v-else><?php _e( 'No fields available', 'wpuf' ); ?></li>
-            </ul>
-        </div><!-- .merge-tag-section -->
-
-        <?php
-        if ( function_exists( 'weforms_get_merge_tags' ) ) {
-
-            $merge_tags = weforms_get_merge_tags();
-
-            foreach ($merge_tags as $section_key => $section) {
-                ?>
-
-                <div class="merge-tag-section">
-                    <div class="merge-tag-head"><?php echo $section['title'] ?></div>
-
-                    <ul>
-                        <?php foreach ($section['tags'] as $key => $value) { ?>
-                            <li>
-                                <a href="#" v-on:click.prevent="insertField('<?php echo $key; ?>');"><?php echo $value; ?></a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </div><!-- .merge-tag-section -->
-
-                <?php
-            }
-        }
-        ?>
-    </div><!-- .merge-tags -->
-</div></script>
-
-<script type="text/x-template" id="tmpl-wpuf-modal">
-<div>
-    <div :class="['wpuf-form-template-modal', show ? 'show' : 'hide' ]">
-
-        <span class="screen-reader-text"><?php _e( 'Modal window. Press escape to close.',  'wpuf'  ); ?></span>
-        <a href="#" class="close" v-on:click.prevent="closeModal()">× <span class="screen-reader-text"><?php _e( 'Close modal window',  'wpuf'  ); ?></span></a>
-
-        <header class="modal-header">
-            <slot name="header"></slot>
-        </header>
-
-        <div :class="['content-container', this.$slots.footer ? 'modal-footer' : 'no-footer']">
-            <div class="content">
-                <slot name="body"></slot>
-            </div>
-        </div>
-
-        <footer v-if="this.$slots.footer">
-            <slot name="footer"></slot>
-        </footer>
-    </div>
-    <div :class="['wpuf-form-template-modal-backdrop', show ? 'show' : 'hide' ]"></div>
-</div>
 </script>
 
 <script type="text/x-template" id="tmpl-wpuf-text-editor">

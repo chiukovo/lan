@@ -66,19 +66,19 @@ class WeForms_Upsell {
         ?>
         <div class="updated" id="weforms-upsell-prompt">
             <div class="weforms-upsell-logo">
-                <img src="http://cdn.weknow.cn/images/wpuf-upsell.png" width="272" height="71" alt="weForms Logo">
+                <img src="https://wedevs-com-wedevs.netdna-ssl.com/wp-content/uploads/2017/08/weforms-upsell.png" width="272" height="71" alt="weForms Logo">
             </div>
             <div class="weforms-upsell-text">
-                <h2>插件已经启用成功!</h2>
+                <h2>weForms is here!</h2>
 
-                <p>在前端创建, 编辑, 删除, 管理你的文章, 页面. 前端注册表单和个人资料编辑...</p>
+                <p>weForms is the next generation contact form plugin for WordPress.</p>
             </div>
             <div class="weforms-upsell-cta">
-
-            <a target="_self" class="button" rel="nofollow" href="tencent://AddContact/?fromId=50&amp;fromSubId=1&amp;subcmd=all&amp;uin=3197022942">点此联系作者咨询</a>
+                <button id="weforms-upsell-prompt-btn" class="button"><?php _e( 'Install Now', 'wp-user-frontend' ); ?></button>
+                &nbsp;<a href="#" class="learn-more" data-tube="NJvjy9WFyAM">Learn More</a>
             </div>
-            <button type="button" class="notice-dismiss" style="padding: 3px;" title="<?php _e( '关闭提示' ); ?>">
-                <span class="screen-reader-text"><?php _e( '关闭提示' ); ?></span>
+            <button type="button" class="notice-dismiss" style="padding: 3px;" title="<?php _e( 'Dismiss this notice.', 'wp-user-frontend' ); ?>">
+                <span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'wp-user-frontend' ); ?></span>
             </button>
         </div>
 
@@ -129,7 +129,7 @@ class WeForms_Upsell {
                 color: #fff;
                 padding: 0;
                 height: 71px;
-                margin-left: -2px;
+                margin-left: -35px;
                 order: 0;
                 flex: 1 1 auto;
                 align-self: auto;
@@ -350,13 +350,7 @@ class WeForms_Upsell {
         check_ajax_referer( 'weforms_upsell_installer' );
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( __( 'You don\'t have permission to install the plugins' ) );
-        }
-
-        if ( ! class_exists( 'WP_User_Frontend' ) ) {
-            $wpuf_status = $this->install_plugin( 'wp-user-frontend', 'wpuf.php' );
-
-            $this->fail_on_error( $wpuf_status );
+            wp_send_json_error( __( 'You don\'t have permission to install the plugins', 'wp-user-frontend' ) );
         }
 
         $weforms_status = $this->install_plugin( 'weforms', 'weforms.php' );

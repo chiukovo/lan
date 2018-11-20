@@ -42,56 +42,126 @@ class WPUF_Form_Builder_Field_Settings {
         $common_properties = array(
             array(
                 'name'      => 'label',
-                'title'     => __( 'Field Label', 'wpuf' ),
+                'title'     => __( 'Field Label', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Enter a title of this field', 'wpuf' ),
+                'help_text' => __( 'Enter a title of this field', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'help',
-                'title'     => __( 'Help text', 'wpuf' ),
+                'title'     => __( 'Help text', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 20,
-                'help_text' => __( 'Give the user some information about this field', 'wpuf' ),
+                'help_text' => __( 'Give the user some information about this field', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'required',
-                'title'     => __( 'Required', 'wpuf' ),
+                'title'     => __( 'Required', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'section'   => 'basic',
                 'priority'  => 21,
                 'default'   => 'no',
                 'inline'    => true,
-                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'wpuf' ),
+                'help_text' => __( 'Check this option to mark the field required. A form will not submit unless all required fields are provided.', 'wp-user-frontend' ),
+            ),
+
+            array(
+                'name'      => 'width',
+                'title'     => __( 'Field Size', 'wp-user-frontend' ),
+                'type'      => 'radio',
+                'options'   => array(
+                    'small'     => __( 'Small', 'wp-user-frontend' ),
+                    'medium'    => __( 'Medium', 'wp-user-frontend' ),
+                    'large'     => __( 'Large', 'wp-user-frontend' ),
+                ),
+                'section'   => 'advanced',
+                'priority'  => 23,
+                'default'   => 'large',
+                'inline'    => true,
             ),
 
             array(
                 'name'      => 'css',
-                'title'     => __( 'CSS Class Name', 'wpuf' ),
+                'title'     => __( 'CSS Class Name', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 22,
-                'help_text' => __( 'Provide a container class name for this field.', 'wpuf' ),
-            ),
+                'help_text' => __( 'Provide a container class name for this field. Available classes: wpuf-col-half, wpuf-col-half-last, wpuf-col-one-third, wpuf-col-one-third-last', 'wp-user-frontend' ),
+            )
         );
 
+        if ( is_wpuf_post_form_builder() ) {
+            $common_properties = array_merge($common_properties, array(
+                array(
+                    'name'      => 'wpuf_visibility',
+                    'title'     => __( 'Visibility', 'wp-user-frontend' ),
+                    'type'      => 'visibility',
+                    'section'   => 'advanced',
+                    'options'   => array(
+                        'everyone'          => __( 'Everyone', 'wp-user-frontend' ),
+                        'hidden'            => __( 'Hidden', 'wp-user-frontend' ),
+                        'logged_in'         => __( 'Logged in users only', 'wp-user-frontend' ),
+                        'subscribed_users'  => __( 'Subscription users only', 'wp-user-frontend' ),
+                    ),
+                    'priority'  => 30,
+                    'inline'    => true,
+                    'help_text' => __( 'Select option', 'wp-user-frontend' ),
+                )
+            ));
+        }
+
         if ( $is_meta ) {
-            $common_properties[] = array(
-                'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
-                'type'      => 'text-meta',
-                'section'   => 'basic',
-                'priority'  => 11,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
-            );
+            $common_properties = array_merge($common_properties, array(
+                array(
+                    'name'      => 'name',
+                    'title'     => __( 'Meta Key', 'wp-user-frontend' ),
+                    'type'      => 'text-meta',
+                    'section'   => 'basic',
+                    'priority'  => 11,
+                    'help_text' => __( 'Name of the meta key this field will save to', 'wp-user-frontend' ),
+                )
+            ));
+
+            if ( is_wpuf_post_form_builder() ) {
+                $common_properties = array_merge($common_properties, array(
+                    array(
+                        'name'      => 'show_in_post',
+                        'title'     => __( 'Show Data in Post', 'wp-user-frontend' ),
+                        'type'      => 'radio',
+                        'options'   => array(
+                            'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                            'no'    => __( 'No', 'wp-user-frontend' ),
+                        ),
+                        'section'   => 'advanced',
+                        'priority'  => 24,
+                        'default'   => 'yes',
+                        'inline'    => true,
+                        'help_text' => __( 'Select Yes if you want to show the field data in single post.', 'wp-user-frontend' ),
+                    ),
+                    array(
+                        'name'      => 'hide_field_label',
+                        'title'     => __( 'Hide Field Label in Post', 'wp-user-frontend' ),
+                        'type'      => 'radio',
+                        'options'   => array(
+                            'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                            'no'    => __( 'No', 'wp-user-frontend' ),
+                        ),
+                        'section'   => 'advanced',
+                        'priority'  => 24,
+                        'default'   => 'no',
+                        'inline'    => true,
+                        'help_text' => __( 'Select Yes if you want to hide the field label in single post.', 'wp-user-frontend' ),
+                    )
+                ));
+            }
         }
 
         return apply_filters( 'wpuf-form-builder-fields-common-properties', $common_properties );
@@ -108,41 +178,41 @@ class WPUF_Form_Builder_Field_Settings {
         $properties = array(
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
+                'title'     => __( 'Placeholder text', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'default',
-                'title'     => __( 'Default value', 'wpuf' ),
+                'title'     => __( 'Default value', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 11,
-                'help_text' => __( 'The default value this field will have', 'wpuf' ),
+                'help_text' => __( 'The default value this field will have', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'size',
-                'title'     => __( 'Size', 'wpuf' ),
+                'title'     => __( 'Size', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'variation' => 'number',
                 'section'   => 'advanced',
                 'priority'  => 20,
-                'help_text' => __( 'Size of this input field', 'wpuf' ),
-            ),
+                'help_text' => __( 'Size of this input field', 'wp-user-frontend' ),
+            )
         );
 
         if ( $word_restriction ) {
             $properties[] = array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
             );
         }
 
@@ -160,29 +230,29 @@ class WPUF_Form_Builder_Field_Settings {
         return array(
             array(
                 'name'      => 'rows',
-                'title'     => __( 'Rows', 'wpuf' ),
+                'title'     => __( 'Rows', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 10,
-                'help_text' => __( 'Number of rows in textarea', 'wpuf' ),
+                'help_text' => __( 'Number of rows in textarea', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'cols',
-                'title'     => __( 'Columns', 'wpuf' ),
+                'title'     => __( 'Columns', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 11,
-                'help_text' => __( 'Number of columns in textarea', 'wpuf' ),
+                'help_text' => __( 'Number of columns in textarea', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'placeholder',
-                'title'     => __( 'Placeholder text', 'wpuf' ),
+                'title'     => __( 'Placeholder text', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 12,
-                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wpuf' ),
+                'help_text' => __( 'Text for HTML5 placeholder attribute', 'wp-user-frontend' ),
                 'dependencies' => array(
                     'rich' => 'no'
                 )
@@ -190,21 +260,21 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'      => 'default',
-                'title'     => __( 'Default value', 'wpuf' ),
+                'title'     => __( 'Default value', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 13,
-                'help_text' => __( 'The default value this field will have', 'wpuf' ),
+                'help_text' => __( 'The default value this field will have', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'rich',
-                'title'     => __( 'Textarea', 'wpuf' ),
+                'title'     => __( 'Textarea', 'wp-user-frontend' ),
                 'type'      => 'radio',
                 'options'   => array(
-                    'no'    => __( 'Normal', 'wpuf' ),
-                    'yes'   => __( 'Rich textarea', 'wpuf' ),
-                    'teeny' => __( 'Teeny Rich textarea', 'wpuf' ),
+                    'no'    => __( 'Normal', 'wp-user-frontend' ),
+                    'yes'   => __( 'Rich textarea', 'wp-user-frontend' ),
+                    'teeny' => __( 'Teeny Rich textarea', 'wp-user-frontend' ),
                 ),
                 'section'   => 'advanced',
                 'priority'  => 14,
@@ -213,12 +283,26 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'      => 'word_restriction',
-                'title'     => __( 'Word Restriction', 'wpuf' ),
+                'title'     => __( 'Word Restriction', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'advanced',
                 'priority'  => 15,
-                'help_text' => __( 'Numebr of words the author to be restricted in', 'wpuf' ),
+                'help_text' => __( 'Numebr of words the author to be restricted in', 'wp-user-frontend' ),
             ),
+        );
+    }
+
+    /**
+     * wpuf_visibility property for all fields
+     *
+     * @since 2.6
+     *
+     * @return array
+     */
+    public static function get_wpuf_visibility_prop( $default = 'everyone' ) {
+        return array(
+            'selected'         => $default,
+            'choices'          => array()
         );
     }
 
@@ -234,7 +318,7 @@ class WPUF_Form_Builder_Field_Settings {
             'condition_status'  => 'no',
             'cond_field'        => array(),
             'cond_operator'     => array( '=' ),
-            'cond_option'       => array( __( '- select -', 'wpuf' ) ),
+            'cond_option'       => array( __( '- select -', 'wp-user-frontend' ) ),
             'cond_logic'        => 'all'
         );
     }
@@ -252,17 +336,18 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'text_field',
-            'title'         => __( 'Text', 'wpuf' ),
+            'title'         => __( 'Text', 'wp-user-frontend' ),
             'icon'          => 'text-width',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'        => 'text',
                 'template'          => 'text_field',
                 'required'          => 'no',
-                'label'             => __( 'Text', 'wpuf' ),
+                'label'             => __( 'Text', 'wp-user-frontend' ),
                 'name'              => '',
                 'is_meta'           => 'yes',
                 'help'              => '',
+                'width'             => '',
                 'css'               => '',
                 'placeholder'       => '',
                 'default'           => '',
@@ -270,6 +355,9 @@ class WPUF_Form_Builder_Field_Settings {
                 'word_restriction'  => '',
                 'id'                => 0,
                 'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
@@ -288,17 +376,18 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'textarea_field',
-            'title'         => __( 'Textarea', 'wpuf' ),
+            'title'         => __( 'Textarea', 'wp-user-frontend' ),
             'icon'          => 'paragraph',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'textarea',
                 'template'         => 'textarea_field',
                 'required'         => 'no',
-                'label'            => __( 'Textarea', 'wpuf' ),
+                'label'            => __( 'Textarea', 'wp-user-frontend' ),
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'rows'             => 5,
                 'cols'             => 25,
@@ -308,6 +397,9 @@ class WPUF_Form_Builder_Field_Settings {
                 'word_restriction' => '',
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -325,12 +417,12 @@ class WPUF_Form_Builder_Field_Settings {
     public static function get_option_data_setting( $is_multiple = false ) {
         return array(
             'name'          => 'options',
-            'title'         => __( 'Options', 'wpuf' ),
+            'title'         => __( 'Options', 'wp-user-frontend' ),
             'type'          => 'option-data',
             'is_multiple'   => $is_multiple,
             'section'       => 'basic',
             'priority'      => 12,
-            'help_text'     => __( 'Add options for the form field', 'wpuf' ),
+            'help_text'     => __( 'Add options for the form field', 'wp-user-frontend' ),
         );
     }
 
@@ -349,11 +441,11 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'          => 'first',
-                'title'         => __( 'Select Text', 'wpuf' ),
+                'title'         => __( 'Select Text', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'basic',
                 'priority'      => 13,
-                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wpuf' ),
+                'help_text'     => __( "First element of the select dropdown. Leave this empty if you don't want to show this field", 'wp-user-frontend' ),
             ),
         );
 
@@ -361,23 +453,27 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'dropdown_field',
-            'title'         => __( 'Dropdown', 'wpuf' ),
+            'title'         => __( 'Dropdown', 'wp-user-frontend' ),
             'icon'          => 'caret-square-o-down',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'select',
                 'template'         => 'dropdown_field',
                 'required'         => 'no',
-                'label'            => __( 'Dropdown', 'wpuf' ),
+                'label'            => __( 'Dropdown', 'wp-user-frontend' ),
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => '',
-                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
-                'first'            => __( '- select -', 'wpuf' ),
+                'options'          => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
+                'first'            => __( '- select -', 'wp-user-frontend' ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -401,23 +497,27 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'multiple_select',
-            'title'         => __( 'Multi Select', 'wpuf' ),
+            'title'         => __( 'Multi Select', 'wp-user-frontend' ),
             'icon'          => 'list-ul',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'multiselect',
                 'template'         => 'multiple_select',
                 'required'         => 'no',
-                'label'            => __( 'Multi Select', 'wpuf' ),
+                'label'            => __( 'Multi Select', 'wp-user-frontend' ),
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => array(),
-                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
-                'first'            => __( '- select -', 'wpuf' ),
+                'options'          => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
+                'first'            => __( '- select -', 'wp-user-frontend' ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -438,17 +538,17 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'          => 'inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             )
         );
 
@@ -456,23 +556,27 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'radio_field',
-            'title'         => __( 'Radio', 'wpuf' ),
+            'title'         => __( 'Radio', 'wp-user-frontend' ),
             'icon'          => 'dot-circle-o',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'radio',
                 'template'         => 'radio_field',
                 'required'         => 'no',
-                'label'            => __( 'Radio Field', 'wpuf' ),
+                'label'            => __( 'Radio Field', 'wp-user-frontend' ),
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => '',
                 'inline'           => 'no',
-                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'options'          => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -493,17 +597,17 @@ class WPUF_Form_Builder_Field_Settings {
 
             array(
                 'name'          => 'inline',
-                'title'         => __( 'Show in inline list', 'wpuf' ),
+                'title'         => __( 'Show in inline list', 'wp-user-frontend' ),
                 'type'          => 'radio',
                 'options'       => array(
-                    'yes'   => __( 'Yes', 'wpuf' ),
-                    'no'    => __( 'No', 'wpuf' ),
+                    'yes'   => __( 'Yes', 'wp-user-frontend' ),
+                    'no'    => __( 'No', 'wp-user-frontend' ),
                 ),
                 'default'       => 'no',
                 'inline'        => true,
                 'section'       => 'advanced',
                 'priority'      => 23,
-                'help_text'     => __( 'Show this option in an inline list', 'wpuf' ),
+                'help_text'     => __( 'Show this option in an inline list', 'wp-user-frontend' ),
             )
         );
 
@@ -511,23 +615,27 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'checkbox_field',
-            'title'         => __( 'Checkbox', 'wpuf' ),
+            'title'         => __( 'Checkbox', 'wp-user-frontend' ),
             'icon'          => 'check-square-o',
             'settings'      => $settings,
             'field_props'   => array(
                 'input_type'       => 'checkbox',
                 'template'         => 'checkbox_field',
                 'required'         => 'no',
-                'label'            => __( 'Checkbox Field', 'wpuf' ),
+                'label'            => __( 'Checkbox Field', 'wp-user-frontend' ),
                 'name'             => '',
                 'is_meta'          => 'yes',
                 'help'             => '',
+                'width'            => '',
                 'css'              => '',
                 'selected'         => array(),
                 'inline'           => 'no',
-                'options'          => array( 'Option' => __( 'Option', 'wpuf' ) ),
+                'options'          => array( 'Option' => __( 'Option', 'wp-user-frontend' ) ),
                 'id'               => 0,
                 'is_new'           => true,
+                'show_in_post'     => 'yes',
+                'hide_field_label' => 'no',
+                'wpuf_visibility'  => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'        => self::get_wpuf_cond_prop()
             )
         );
@@ -543,27 +651,46 @@ class WPUF_Form_Builder_Field_Settings {
     public static function website_url() {
         $settings = self::get_common_properties();
         $settings = array_merge( $settings, self::get_common_text_properties() );
+        $settings[] =  array(
+            'name'      => 'open_window',
+            'title'     => __( 'Open in : ', 'wp-user-frontend' ),
+            'type'      => 'radio',
+            'options'   => array(
+                'same'   => __( 'Same Window', 'wp-user-frontend' ),
+                'new'    => __( 'New Window', 'wp-user-frontend' ),
+            ),
+            'section'   => 'basic',
+            'default'   => 'same',
+            'inline'    => true,
+            'priority'  => 32,
+            'help_text' => __( 'Choose whether the link will open in new tab or same window', 'wp-user-frontend' ),
+        );
 
         return array(
             'template'      => 'website_url',
-            'title'         => __( 'URL', 'wpuf' ),
+            'title'         => __( 'URL', 'wp-user-frontend' ),
             'icon'          => 'link',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'url',
-                'template'      => 'website_url',
-                'required'      => 'no',
-                'label'         => __( 'URL', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'url',
+                'template'          => 'website_url',
+                'required'          => 'no',
+                'label'             => __( 'URL', 'wp-user-frontend' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => 'large',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'open_window'       => 'same',
+                'size'              => 40,
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -581,24 +708,28 @@ class WPUF_Form_Builder_Field_Settings {
 
         return array(
             'template'      => 'email_address',
-            'title'         => __( 'Email Address', 'wpuf' ),
+            'title'         => __( 'Email Address', 'wp-user-frontend' ),
             'icon'          => 'envelope-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'email',
-                'template'      => 'email_address',
-                'required'      => 'no',
-                'label'         => __( 'Email', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'css'           => '',
-                'placeholder'   => '',
-                'default'       => '',
-                'size'          => 40,
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'email',
+                'template'          => 'email_address',
+                'required'          => 'no',
+                'label'             => __( 'Email', 'wp-user-frontend' ),
+                'name'              => '',
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => 'large',
+                'css'               => '',
+                'placeholder'       => '',
+                'default'           => '',
+                'size'              => 40,
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -614,38 +745,41 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array(
             array(
                 'name'      => 'name',
-                'title'     => __( 'Meta Key', 'wpuf' ),
+                'title'     => __( 'Meta Key', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Name of the meta key this field will save to', 'wpuf' ),
+                'help_text' => __( 'Name of the meta key this field will save to', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'meta_value',
-                'title'     => __( 'Meta Value', 'wpuf' ),
+                'title'     => __( 'Meta Value', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Enter the meta value', 'wpuf' ),
+                'help_text' => __( 'Enter the meta value', 'wp-user-frontend' ),
             ),
         );
 
         return array(
             'template'      => 'custom_hidden_field',
-            'title'         => __( 'Hidden Field', 'wpuf' ),
+            'title'         => __( 'Hidden Field', 'wp-user-frontend' ),
             'icon'          => 'eye-slash',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'hidden',
-                'template'      => 'custom_hidden_field',
-                'label'         => '',
-                'name'          => '',
-                'meta_value'    => '',
-                'is_meta'       => 'yes',
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => null
+                'input_type'        => 'hidden',
+                'template'          => 'custom_hidden_field',
+                'label'             => '',
+                'name'              => '',
+                'meta_value'        => '',
+                'is_meta'           => 'yes',
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => null
             )
         );
     }
@@ -662,43 +796,56 @@ class WPUF_Form_Builder_Field_Settings {
 
         $settings = array_merge( $settings, array(
             array(
+                'name'          => 'button_label',
+                'title'         => __( 'Button Label', 'wp-user-frontend' ),
+                'type'          => 'text',
+                'default'       => __( 'Select Image', 'wp-user-frontend' ),
+                'section'       => 'basic',
+                'priority'      => 30,
+                'help_text'     => __( 'Enter a label for the Select button', 'wp-user-frontend' ),
+            ),
+            array(
                 'name'          => 'max_size',
-                'title'         => __( 'Max. file size', 'wpuf' ),
+                'title'         => __( 'Max. file size', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 20,
-                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wpuf' ),
+                'help_text'     => __( 'Enter maximum upload size limit in KB', 'wp-user-frontend' ),
             ),
-
             array(
                 'name'          => 'count',
-                'title'         => __( 'Max. files', 'wpuf' ),
+                'title'         => __( 'Max. files', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'advanced',
                 'priority'      => 21,
-                'help_text'     => __( 'Number of images can be uploaded', 'wpuf' ),
+                'help_text'     => __( 'Number of images can be uploaded', 'wp-user-frontend' ),
             ),
         ) );
 
         return array(
             'template'      => 'image_upload',
-            'title'         => __( 'Image Upload', 'wpuf' ),
+            'title'         => __( 'Image Upload', 'wp-user-frontend' ),
             'icon'          => 'file-image-o',
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'image_upload',
-                'template'      => 'image_upload',
-                'required'      => 'no',
-                'label'         => __( 'Image Upload', 'wpuf' ),
-                'name'          => '',
-                'is_meta'       => 'yes',
-                'help'          => '',
-                'css'           => '',
-                'max_size'      => '1024',
-                'count'         => '1',
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'image_upload',
+                'template'          => 'image_upload',
+                'required'          => 'no',
+                'label'             => __( 'Image Upload', 'wp-user-frontend' ),
+                'name'              => '',
+                'button_label'      => __( 'Select Image', 'wp-user-frontend' ),
+                'is_meta'           => 'yes',
+                'help'              => '',
+                'width'             => '',
+                'css'               => '',
+                'max_size'          => '1024',
+                'count'             => '1',
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -714,36 +861,40 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array(
             array(
                 'name'      => 'label',
-                'title'     => __( 'Title', 'wpuf' ),
+                'title'     => __( 'Title', 'wp-user-frontend' ),
                 'type'      => 'text',
                 'section'   => 'basic',
                 'priority'  => 10,
-                'help_text' => __( 'Title of the section', 'wpuf' ),
+                'help_text' => __( 'Title of the section', 'wp-user-frontend' ),
             ),
 
             array(
                 'name'      => 'description',
-                'title'     => __( 'Description', 'wpuf' ),
+                'title'     => __( 'Description', 'wp-user-frontend' ),
                 'type'      => 'textarea',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Some details text about the section', 'wpuf' ),
+                'help_text' => __( 'Some details text about the section', 'wp-user-frontend' ),
             ),
         );
 
         return array(
             'template'      => 'section_break',
-            'title'         => __( 'Section Break', 'wpuf' ),
+            'title'         => __( 'Section Break', 'wp-user-frontend' ),
+            'icon'          => 'columns',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'section_break',
-                'template'      => 'section_break',
-                'label'         => __( 'Section Break', 'wpuf' ),
-                'description'   => __( 'Some description about this section', 'wpuf' ),
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'section_break',
+                'template'          => 'section_break',
+                'label'             => __( 'Section Break', 'wp-user-frontend' ),
+                'description'       => __( 'Some description about this section', 'wp-user-frontend' ),
+                'id'                => 0,
+                'is_new'            => true,
+                'show_in_post'      => 'yes',
+                'hide_field_label'  => 'no',
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -759,27 +910,29 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array(
             array(
                 'name'      => 'html',
-                'title'     => __( 'HTML Codes', 'wpuf' ),
+                'title'     => __( 'HTML Codes', 'wp-user-frontend' ),
                 'type'      => 'textarea',
                 'section'   => 'basic',
                 'priority'  => 11,
-                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wpuf' ),
+                'help_text' => __( 'Paste your HTML codes, WordPress shortcodes will also work here', 'wp-user-frontend' ),
             ),
         );
 
         return array(
             'template'      => 'custom_html',
-            'title'         => __( 'Custom HTML', 'wpuf' ),
+            'title'         => __( 'Custom HTML', 'wp-user-frontend' ),
+            'icon'          => 'code',
             'is_full_width' => true,
             'settings'      => $settings,
             'field_props'   => array(
-                'input_type'    => 'html',
-                'template'      => 'custom_html',
-                'label'         => __( 'Custom HTML', 'wpuf' ),
-                'html'          => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wpuf' ) ),
-                'id'            => 0,
-                'is_new'        => true,
-                'wpuf_cond'     => self::get_wpuf_cond_prop()
+                'input_type'        => 'html',
+                'template'          => 'custom_html',
+                'label'             => __( 'Custom HTML', 'wp-user-frontend' ),
+                'html'              => sprintf( '<p>%s</p>', __( 'Some description about this section', 'wp-user-frontend' ) ),
+                'id'                => 0,
+                'is_new'            => true,
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
+                'wpuf_cond'         => self::get_wpuf_cond_prop()
             )
         );
     }
@@ -795,11 +948,11 @@ class WPUF_Form_Builder_Field_Settings {
         $settings = array(
             array(
                 'name'          => 'label',
-                'title'         => __( 'Title', 'wpuf' ),
+                'title'         => __( 'Title', 'wp-user-frontend' ),
                 'type'          => 'text',
                 'section'       => 'basic',
                 'priority'      => 10,
-                'help_text'     => __( 'Title of the section', 'wpuf' ),
+                'help_text'     => __( 'Title of the section', 'wp-user-frontend' ),
             ),
 
             array(
@@ -807,25 +960,26 @@ class WPUF_Form_Builder_Field_Settings {
                 'title'         => 'reCaptcha type',
                 'type'          => 'radio',
                 'options'       => array(
-                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wpuf' ),
-                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wpuf' ),
+                    'enable_no_captcha'    => __( 'Enable noCaptcha', 'wp-user-frontend' ),
+                    'invisible_recaptcha'  => __( 'Enable Invisible reCaptcha', 'wp-user-frontend' ),
                 ),
                 'default'       => 'enable_no_captcha',
                 'section'       => 'basic',
                 'priority'      => 11,
-                'help_text'     => __( 'Select reCaptcha type', 'wpuf' ),
+                'help_text'     => __( 'Select reCaptcha type', 'wp-user-frontend' ),
             )
         );
 
         return array(
             'template'      => 'recaptcha',
-            'title'         => __( 'reCaptcha', 'wpuf' ),
+            'title'         => __( 'reCaptcha', 'wp-user-frontend' ),
+            'icon'          => 'qrcode',
             'validator'     => array(
                 'callback'      => 'has_recaptcha_api_keys',
                 'button_class'  => 'button-faded',
-                'msg_title'     => __( 'Site key and Secret key', 'wpuf' ),
+                'msg_title'     => __( 'Site key and Secret key', 'wp-user-frontend' ),
                 'msg'           => sprintf(
-                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wpuf' ),
+                    __( 'You need to set Site key and Secret key in <a href="%s" target="_blank">Settings</a> in order to use "Recaptcha" field. <a href="%s" target="_blank">Click here to get the these key</a>.', 'wp-user-frontend' ),
                     admin_url( 'admin.php?page=wpuf-settings' ),
                     'https://www.google.com/recaptcha/'
                 ),
@@ -838,6 +992,7 @@ class WPUF_Form_Builder_Field_Settings {
                 'recaptcha_type'    => 'enable_no_captcha',
                 'id'                => 0,
                 'is_new'            => true,
+                'wpuf_visibility'   => self::get_wpuf_visibility_prop(),
                 'wpuf_cond'         => self::get_wpuf_cond_prop(),
             )
         );

@@ -12,7 +12,7 @@ class WPUF_Pro_Prompt {
     }
 
     public static function get_pro_url() {
-        return 'https://www.wpzt.cn/product/wp-user-frontend-pro';
+        return 'https://wedevs.com/wp-user-frontend-pro/pricing/?utm_source=freeplugin&utm_medium=prompt&utm_term=wpuf_free_plugin&utm_content=textlink&utm_campaign=pro_prompt';
     }
 
     public static function get_pro_prompt_text() {

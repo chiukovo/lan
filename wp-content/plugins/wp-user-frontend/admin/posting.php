@@ -41,26 +41,44 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         $scheme = is_ssl() ? 'https' : 'http';
         $api_key = wpuf_get_option( 'gmap_api_key', 'wpuf_general' );
 
-        wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-www.thefox.cn.css' );
+        wp_enqueue_style( 'jquery-ui', WPUF_ASSET_URI . '/css/jquery-ui-1.9.1.custom.css' );
 
         wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_script( 'jquery-ui-slider' );
         wp_enqueue_script( 'jquery-ui-timepicker', WPUF_ASSET_URI . '/js/jquery-ui-timepicker-addon.js', array('jquery-ui-datepicker') );
 
+        if ( !empty( $api_key ) ) {
+            wp_enqueue_script( 'google-maps', $scheme . '://maps.google.com/maps/api/js?libraries=places&key='.$api_key, array(), null );
+        } else {
+            add_action('admin_head', 'wpuf_hide_google_map_button');
+
+            function wpuf_hide_google_map_button() {
+              echo "<style>
+                button.button[data-name='custom_map'] {
+                    display: none;
+                }
+              </style>";
+            }
+        }
+
+        wp_enqueue_style( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.css', array(), WPUF_VERSION );
+        wp_enqueue_script( 'wpuf-sweetalert2', WPUF_ASSET_URI . '/vendor/sweetalert2/dist/sweetalert2.js', array(), WPUF_VERSION, true );
         wp_enqueue_script( 'wpuf-upload', WPUF_ASSET_URI . '/js/upload.js', array('jquery', 'plupload-handlers') );
         wp_localize_script( 'wpuf-upload', 'wpuf_frontend_upload', array(
-            'confirmMsg' => __( 'Are you sure?', 'wpuf' ),
+            'confirmMsg' => __( 'Are you sure?', 'wp-user-frontend' ),
+            'delete_it'  => __( 'Yes, delete it', 'wp-user-frontend' ),
+            'cancel_it'  => __( 'No, cancel it', 'wp-user-frontend' ),
             'ajaxurl'    => admin_url( 'admin-ajax.php' ),
             'nonce'      => wp_create_nonce( 'wpuf_nonce' ),
             'plupload'   => array(
                 'url'              => admin_url( 'admin-ajax.php' ) . '?nonce=' . wp_create_nonce( 'wpuf-upload-nonce' ),
                 'flash_swf_url'    => includes_url( 'js/plupload/plupload.flash.swf' ),
-                'filters'          => array(array('title' => __( 'Allowed Files', 'wpuf' ), 'extensions' => '*')),
+                'filters'          => array(array('title' => __( 'Allowed Files', 'wp-user-frontend' ), 'extensions' => '*')),
                 'multipart'        => true,
                 'urlstream_upload' => true,
-                'warning'          => __( 'Maximum number of files reached!', 'wpuf' ),
-                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wpuf' ),
-                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wpuf' )
+                'warning'          => __( 'Maximum number of files reached!', 'wp-user-frontend' ),
+                'size_error'       => __( 'The file you have uploaded exceeds the file size limit. Please try again.', 'wp-user-frontend' ),
+                'type_error'       => __( 'You have uploaded an incorrect file type. Please try again.', 'wp-user-frontend' )
             )
         ) );
     }
@@ -72,14 +90,14 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * form select box to assign a form id.
      *
      * @since 2.5.2
-     * 
+     *
      * @return void
      */
     function add_meta_box_form_select() {
 
         $post_types = get_post_types( array('public' => true) );
         foreach ($post_types as $post_type) {
-            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wpuf'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
+            add_meta_box( 'wpuf-select-form', __('WPUF Form', 'wp-user-frontend'), array($this, 'form_selection_metabox'), $post_type, 'side', 'high' );
         }
     }
 
@@ -108,6 +126,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
             <option value="<?php echo $form->ID; ?>"<?php selected($selected, $form->ID); ?>><?php echo $form->post_title; ?></option>
             <?php } ?>
         </select>
+        <div>
+            <p><a href="https://wedevs.com/docs/wp-user-frontend-pro/tutorials/purpose-of-the-wpuf-form-metabox/" target="_blank"><?php _e( 'Purpose of this metabox', 'wp-user-frontend' ); ?></a></p>
+        </div>
         <?php
     }
 
@@ -136,21 +157,21 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
 
         update_post_meta( $post->ID, '_wpuf_form_id', $_POST['wpuf_form_select'] );
     }
-    
+
     /**
      * Meta box to show WPUF Custom Fields
      *
      * Registers a meta box in public post types to show WPUF Custom Fields
      *
      * @since 2.5
-     * 
+     *
      * @return void
      */
     function add_meta_boxes() {
         $post_types = get_post_types( array('public' => true) );
 
         foreach ($post_types as $post_type) {
-            add_meta_box( 'wpuf-custom-fields', __( 'WPUF Custom Fields', 'wpuf' ), array($this, 'render_form'), $post_type, 'normal', 'high' );
+            add_meta_box( 'wpuf-custom-fields', __( 'WPUF Custom Fields', 'wp-user-frontend' ), array($this, 'render_form'), $post_type, 'normal', 'high' );
         }
     }
 
@@ -158,7 +179,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * function to hide form custom field
      *
      * @since 2.5
-     * 
+     *
      * @return void
      */
     function hide_form() {
@@ -173,10 +194,10 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param int $form_id
      * @param int $post_id
-     * 
+     *
      * @return void
      */
     function render_form( $form_id, $post_id = null ) {
@@ -185,8 +206,15 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         $form_id = get_post_meta( $post->ID, '_wpuf_form_id', true );
         $form_settings = wpuf_get_form_settings( $form_id );
 
+        /**
+         * There may be incompatibilities with WPUF metabox display when Advanced Custom Fields
+         * is active. By default WPUF metaboxes will be hidden when ACF is detected. However,
+         * you can override that by using the following filter.
+         */
+        $hide_with_acf = class_exists( 'acf' ) ? apply_filters( 'wpuf_hide_meta_when_acf_active', true ) : false;
+
         // hide the metabox itself if no form ID is set
-        if ( !$form_id || class_exists('acf') ) {
+        if ( !$form_id || $hide_with_acf ) {
             $this->hide_form();
             return;
         }
@@ -194,7 +222,7 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
         list($post_fields, $taxonomy_fields, $custom_fields) = $this->get_input_fields( $form_id );
 
         if ( empty( $custom_fields ) ) {
-            _e( 'No custom fields found.', 'wpuf' );
+            _e( 'No custom fields found.', 'wp-user-frontend' );
             return;
         }
         ?>
@@ -228,10 +256,10 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate table header of frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param array $form_field
      * @param int $post_id
-     * 
+     *
      * @return void
      */
     function render_item_before( $form_field, $post_id = 0 ) {
@@ -246,9 +274,9 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * generate table bottom of frontend form field
      *
      * @since 2.5
-     * 
+     *
      * @param array $form_field
-     * 
+     *
      * @return void
      */
     function render_item_after( $form_field ) {
@@ -320,35 +348,6 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
                 border-radius: 5px;
                 margin-right: 5px;
             }
-            ul.wpuf-attachment-list li a.attachment-delete {
-                text-decoration: none;
-                padding: 3px 12px;
-                border: 1px solid #C47272;
-                color: #ffffff;
-                text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-                -webkit-border-radius: 3px;
-                -moz-border-radius: 3px;
-                border-radius: 3px;
-                background-color: #da4f49;
-                background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
-                background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
-                background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-                background-repeat: repeat-x;
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
-                border-color: #bd362f #bd362f #802420;
-                border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-                *background-color: #bd362f;
-                filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-            }
-            ul.wpuf-attachment-list li a.attachment-delete:hover,
-            ul.wpuf-attachment-list li a.attachment-delete:active {
-                color: #ffffff;
-                background-color: #bd362f;
-                *background-color: #a9302a;
-            }
-
             .wpuf-cf-table table th,
             .wpuf-cf-table table td{
                 padding-left: 0 !important;
@@ -401,34 +400,34 @@ class WPUF_Admin_Posting extends WPUF_Render_Form {
      * save post meta
      *
      * @since 2.5
-     * 
+     *
      * @param object $post
-     * 
+     *
      * @return void
      */
     // Save the Metabox Data
-    function save_meta( $post_id, $post ) {
+    function save_meta( $post_id, $post = null ) {
 
-        if ( !isset( $post->ID ) ) {
+        if ( !isset( $post_id ) ) {
             return;
         }
 
         if ( !isset( $_POST['wpuf_cf_update'] ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         if ( !wp_verify_nonce( $_POST['wpuf_cf_update'], plugin_basename( __FILE__ ) ) ) {
-            return $post->ID;
+            return $post_id;
         }
 
         // Is the user allowed to edit the post or page?
-        if ( !current_user_can( 'edit_post', $post->ID ) ) {
-            return $post->ID;
+        if ( !current_user_can( 'edit_post', $post_id ) ) {
+            return $post_id;
         }
 
         list( $post_vars, $tax_vars, $meta_vars ) = self::get_input_fields( $_POST['wpuf_cf_form_id'] );
 
-        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post->ID );
+        WPUF_Frontend_Form_Post::update_post_meta( $meta_vars, $post_id );
     }
 
 }

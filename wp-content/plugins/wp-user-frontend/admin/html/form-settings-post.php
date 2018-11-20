@@ -4,49 +4,30 @@ global $post;
 $form_settings = wpuf_get_form_settings( $post->ID );
 
 $post_status_selected  = isset( $form_settings['post_status'] ) ? $form_settings['post_status'] : 'publish';
-$restrict_message      = __( "This page is restricted. Please Log in / Register to view this page.", 'wpuf' );
+$restrict_message      = __( "This page is restricted. Please Log in / Register to view this page.", 'wp-user-frontend' );
 
 $post_type_selected    = isset( $form_settings['post_type'] ) ? $form_settings['post_type'] : 'post';
 
 $post_format_selected  = isset( $form_settings['post_format'] ) ? $form_settings['post_format'] : 0;
-$default_cat           = isset( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : -1;
-
-$guest_post            = isset( $form_settings['guest_post'] ) ? $form_settings['guest_post'] : 'false';
-$guest_details         = isset( $form_settings['guest_details'] ) ? $form_settings['guest_details'] : 'true';
-$name_label            = isset( $form_settings['name_label'] ) ? $form_settings['name_label'] : __( 'Name' );
-$email_label           = isset( $form_settings['email_label'] ) ? $form_settings['email_label'] : __( 'Email' );
-$message_restrict      = isset( $form_settings['message_restrict'] ) ? $form_settings['message_restrict'] : $restrict_message;
+$default_cat           = !empty( $form_settings['default_cat'] ) ? $form_settings['default_cat'] : array();
 
 $redirect_to           = isset( $form_settings['redirect_to'] ) ? $form_settings['redirect_to'] : 'post';
-$message               = isset( $form_settings['message'] ) ? $form_settings['message'] : __( 'Post saved', 'wpuf' );
-$update_message        = isset( $form_settings['update_message'] ) ? $form_settings['update_message'] : __( 'Post updated successfully', 'wpuf' );
+$message               = isset( $form_settings['message'] ) ? $form_settings['message'] : __( 'Post saved', 'wp-user-frontend' );
+$update_message        = isset( $form_settings['update_message'] ) ? $form_settings['update_message'] : __( 'Post updated successfully', 'wp-user-frontend' );
 $page_id               = isset( $form_settings['page_id'] ) ? $form_settings['page_id'] : 0;
 $url                   = isset( $form_settings['url'] ) ? $form_settings['url'] : '';
 $comment_status        = isset( $form_settings['comment_status'] ) ? $form_settings['comment_status'] : 'open';
 
-$submit_text           = isset( $form_settings['submit_text'] ) ? $form_settings['submit_text'] : __( 'Submit', 'wpuf' );
-$draft_text            = isset( $form_settings['draft_text'] ) ? $form_settings['draft_text'] : __( 'Save Draft', 'wpuf' );
-$preview_text          = isset( $form_settings['preview_text'] ) ? $form_settings['preview_text'] : __( 'Preview', 'wpuf' );
+$submit_text           = isset( $form_settings['submit_text'] ) ? $form_settings['submit_text'] : __( 'Submit', 'wp-user-frontend' );
+$draft_text            = isset( $form_settings['draft_text'] ) ? $form_settings['draft_text'] : __( 'Save Draft', 'wp-user-frontend' );
+$preview_text          = isset( $form_settings['preview_text'] ) ? $form_settings['preview_text'] : __( 'Preview', 'wp-user-frontend' );
 $draft_post            = isset( $form_settings['draft_post'] ) ? $form_settings['draft_post'] : 'false';
-$subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $form_settings['subscription_disabled'] : '';
 
 ?>
     <table class="form-table">
 
-        <tr class="">
-            <th><?php _e( 'Disable Subscription', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="checkbox" name="wpuf_settings[subscription_disabled]" value="yes" <?php checked( $subscription_disabled, 'yes' ); ?> />
-                    <?php _e( 'Disable Subscription', 'wpuf' ); ?>
-                </label>
-
-                <p class="description"><?php echo __( 'If checked, any subscription and pay-per-post will be disabled on the form and will take no effect.', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
         <tr class="wpuf-post-type">
-            <th><?php _e( 'Post Type', 'wpuf' ); ?></th>
+            <th><?php _e( 'Post Type', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_type]">
                     <?php
@@ -61,17 +42,19 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     unset($post_types['custom_css']);
                     unset($post_types['customize_changeset']);
                     unset($post_types['wpuf_coupon']);
+                    unset($post_types['oembed_cache']);
 
                     foreach ($post_types as $post_type) {
                         printf('<option value="%s"%s>%s</option>', $post_type, selected( $post_type_selected, $post_type, false ), $post_type );
                     }
                     ?>
                 </select>
+                <p class="description"><?php _e( 'Custom Post Type will appear here. ', 'wp-user-frontend' );?><a target="_blank" href="https://wedevs.com/docs/wp-user-frontend-pro/posting-forms/different-custom-post-type-submission-2/"><?php _e('Learn More ', 'wp-user-frontend')?></a></p>
             </td>
         </tr>
 
         <tr class="wpuf-post-status">
-            <th><?php _e( 'Post Status', 'wpuf' ); ?></th>
+            <th><?php _e( 'Post Status', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_status]">
                     <?php
@@ -85,10 +68,10 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
         </tr>
 
         <tr class="wpuf-post-fromat">
-            <th><?php _e( 'Post Format', 'wpuf' ); ?></th>
+            <th><?php _e( 'Post Format', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[post_format]">
-                    <option value="0"><?php _e( '- None -', 'wpuf' ); ?></option>
+                    <option value="0"><?php _e( '- None -', 'wp-user-frontend' ); ?></option>
                     <?php
                     $post_formats = get_theme_support( 'post-formats' );
 
@@ -103,84 +86,58 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
         </tr>
 
         <tr class="wpuf-default-cat">
-            <th><?php _e( 'Default Post Category', 'wpuf' ); ?></th>
+            <th><?php _e( 'Default Post Category', 'wp-user-frontend' ); ?></th>
             <td>
                 <?php
-                wp_dropdown_categories( array(
+
+                if ( !is_array( $default_cat ) ) {
+                    $default_cat = (array) $default_cat;
+                }
+
+                $post_taxonomies = get_object_taxonomies( $post_type_selected, 'objects' );
+                $post_terms = array();
+
+                foreach ( $post_taxonomies as $tax ) {
+                    if ( $tax->hierarchical ) {
+                        $post_terms[] = $tax->name;
+                    }
+                }
+
+                $args = array(
                     'hide_empty'       => false,
                     'hierarchical'     => true,
                     'selected'         => $default_cat,
-                    'name'             => 'wpuf_settings[default_cat]',
-                    'show_option_none' => __( '- None -', 'wpuf' ),
-                    'taxonomy'         => ( $post_type_selected == 'product' ) ? 'product_cat' : 'category'
-                ) );
+                    'taxonomy'         => $post_terms
+                );
+
+                echo '<select multiple name="wpuf_settings[default_cat][]">';
+                $categories = get_terms( $args );
+
+                foreach ( $categories as $category ) {
+                    $selected = '';
+                    if ( in_array( $category->term_id, $default_cat ) ) {
+                        $selected = 'selected ';
+                    }
+                    echo '<option ' . $selected . 'value="' . $category->term_id . '">' . $category->name . '</option>';
+                }
+
+                echo '</select>';
+
                 ?>
-                <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr>
-            <th><?php _e( 'Guest Post', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="hidden" name="wpuf_settings[guest_post]" value="false">
-                    <input type="checkbox" name="wpuf_settings[guest_post]" value="true"<?php checked( $guest_post, 'true' ); ?> />
-                    <?php _e( 'Enable Guest Post', 'wpuf' ) ?>
-                </label>
-                <p class="description"><?php _e( 'Unregistered users will be able to submit posts', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest">
-            <th><?php _e( 'User Details', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="hidden" name="wpuf_settings[guest_details]" value="false">
-                    <input type="checkbox" name="wpuf_settings[guest_details]" value="true"<?php checked( $guest_details, 'true' ); ?> />
-                    <?php _e( 'Require Name and Email address', 'wpuf' ) ?>
-                </label>
-                <p class="description"><?php _e( 'If requires, users will be automatically registered to the site using the name and email address', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest show-if-details">
-            <th><?php _e( 'Name Label', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="text" name="wpuf_settings[name_label]" value="<?php echo esc_attr( $name_label ); ?>" />
-                </label>
-                <p class="description"><?php _e( 'Label text for name field', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-guest show-if-details">
-            <th><?php _e( 'E-Mail Label', 'wpuf' ); ?></th>
-            <td>
-                <label>
-                    <input type="text" name="wpuf_settings[email_label]" value="<?php echo esc_attr( $email_label ); ?>" />
-                </label>
-                <p class="description"><?php _e( 'Label text for email field', 'wpuf' ); ?></p>
-            </td>
-        </tr>
-
-        <tr class="show-if-not-guest">
-            <th><?php _e( 'Unauthorized Message', 'wpuf' ); ?></th>
-            <td>
-                <textarea rows="3" cols="40" name="wpuf_settings[message_restrict]"><?php echo esc_textarea( $message_restrict ); ?></textarea>
-                <p class="description"><?php _e( 'Not logged in users will see this message', 'wpuf' ); ?></p>
+                <p class="description"><?php echo __( 'If users are not allowed to choose any category, this category will be used instead (if post type supports)', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 
         <tr class="wpuf-redirect-to">
-            <th><?php _e( 'Redirect To', 'wpuf' ); ?></th>
+            <th><?php _e( 'Redirect To', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[redirect_to]">
                     <?php
                     $redirect_options = array(
-                        'post' => __( 'Newly created post', 'wpuf' ),
-                        'same' => __( 'Same Page', 'wpuf' ),
-                        'page' => __( 'To a page', 'wpuf' ),
-                        'url' => __( 'To a custom URL', 'wpuf' )
+                        'post' => __( 'Newly created post', 'wp-user-frontend' ),
+                        'same' => __( 'Same Page', 'wp-user-frontend' ),
+                        'page' => __( 'To a page', 'wp-user-frontend' ),
+                        'url' => __( 'To a custom URL', 'wp-user-frontend' )
                     );
 
                     foreach ($redirect_options as $to => $label) {
@@ -189,20 +146,20 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
                     ?>
                 </select>
                 <p class="description">
-                    <?php _e( 'After successfull submit, where the page will redirect to', 'wpuf' ) ?>
+                    <?php _e( 'After successfull submit, where the page will redirect to', $domain = 'wp-user-frontend' ) ?>
                 </p>
             </td>
         </tr>
 
         <tr class="wpuf-same-page">
-            <th><?php _e( 'Message to show', 'wpuf' ); ?></th>
+            <th><?php _e( 'Message to show', 'wp-user-frontend' ); ?></th>
             <td>
                 <textarea rows="3" cols="40" name="wpuf_settings[message]"><?php echo esc_textarea( $message ); ?></textarea>
             </td>
         </tr>
 
         <tr class="wpuf-page-id">
-            <th><?php _e( 'Page', 'wpuf' ); ?></th>
+            <th><?php _e( 'Page', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[page_id]">
                     <?php
@@ -217,38 +174,38 @@ $subscription_disabled = isset( $form_settings['subscription_disabled'] ) ? $for
         </tr>
 
         <tr class="wpuf-url">
-            <th><?php _e( 'Custom URL', 'wpuf' ); ?></th>
+            <th><?php _e( 'Custom URL', 'wp-user-frontend' ); ?></th>
             <td>
                 <input type="url" name="wpuf_settings[url]" value="<?php echo esc_attr( $url ); ?>">
             </td>
         </tr>
 
         <tr class="wpuf-comment">
-            <th><?php _e( 'Comment Status', 'wpuf' ); ?></th>
+            <th><?php _e( 'Comment Status', 'wp-user-frontend' ); ?></th>
             <td>
                 <select name="wpuf_settings[comment_status]">
-                    <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e('Open'); ?></option>
-                    <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e('Closed'); ?></option>
+                    <option value="open" <?php selected( $comment_status, 'open'); ?>><?php _e('Open', 'wp-user-frontend'); ?></option>
+                    <option value="closed" <?php selected( $comment_status, 'closed'); ?>><?php _e('Closed', 'wp-user-frontend'); ?></option>
                 </select>
             </td>
         </tr>
 
         <tr class="wpuf-submit-text">
-            <th><?php _e( 'Submit Post Button text', 'wpuf' ); ?></th>
+            <th><?php _e( 'Submit Post Button text', 'wp-user-frontend' ); ?></th>
             <td>
                 <input type="text" name="wpuf_settings[submit_text]" value="<?php echo esc_attr( $submit_text ); ?>">
             </td>
         </tr>
 
         <tr>
-            <th><?php _e( 'Post Draft', 'wpuf' ); ?></th>
+            <th><?php _e( 'Post Draft', 'wp-user-frontend' ); ?></th>
             <td>
                 <label>
                     <input type="hidden" name="wpuf_settings[draft_post]" value="false">
                     <input type="checkbox" name="wpuf_settings[draft_post]" value="true"<?php checked( $draft_post, 'true' ); ?> />
-                    <?php _e( 'Enable Saving as draft', 'wpuf' ) ?>
+                    <?php _e( 'Enable Saving as draft', 'wp-user-frontend' ) ?>
                 </label>
-                <p class="description"><?php _e( 'It will show a button to save as draft', 'wpuf' ); ?></p>
+                <p class="description"><?php _e( 'It will show a button to save as draft', 'wp-user-frontend' ); ?></p>
             </td>
         </tr>
 

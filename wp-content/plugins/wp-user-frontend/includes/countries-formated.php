@@ -178,7 +178,7 @@ $countries = array(
         'code' => 'CL',
     ),
     array(
-        'name' => '中国',
+        'name' => 'China',
         'code' => 'CN',
     ),
     array(
@@ -294,7 +294,7 @@ $countries = array(
         'code' => 'FI',
     ),
     array(
-        'name' => '法国',
+        'name' => 'France',
         'code' => 'FR',
     ),
     array(
@@ -390,7 +390,7 @@ $countries = array(
         'code' => 'HN',
     ),
     array(
-        'name' => '中国香港',
+        'name' => 'Hong Kong',
         'code' => 'HK',
     ),
     array(
@@ -438,7 +438,7 @@ $countries = array(
         'code' => 'JM',
     ),
     array(
-        'name' => '日本',
+        'name' => 'Japan',
         'code' => 'JP',
     ),
     array(
@@ -466,7 +466,7 @@ $countries = array(
         'code' => 'KP',
     ),
     array(
-        'name' => '韩国',
+        'name' => 'Korea, Republic of',
         'code' => 'KR',
     ),
     array(
@@ -588,6 +588,10 @@ $countries = array(
     array(
         'name' => 'Montserrat',
         'code' => 'MS',
+    ),
+    array(
+        'name' => 'Montenegro',
+        'code' => 'ME',
     ),
     array(
         'name' => 'Morocco',
@@ -770,8 +774,8 @@ $countries = array(
         'code' => 'SN',
     ),
     array(
-        'name' => 'Serbia and Montenegro',
-        'code' => 'CS',
+        'name' => 'Serbia',
+        'code' => 'RS',
     ),
     array(
         'name' => 'Seychelles',
@@ -846,7 +850,7 @@ $countries = array(
         'code' => 'SY',
     ),
     array(
-        'name' => '中国台湾',
+        'name' => 'Taiwan, Province of China',
         'code' => 'TW',
     ),
     array(
@@ -914,11 +918,11 @@ $countries = array(
         'code' => 'AE',
     ),
     array(
-        'name' => '英国',
+        'name' => 'United Kingdom',
         'code' => 'GB',
     ),
     array(
-        'name' => '美国',
+        'name' => 'United States',
         'code' => 'US',
     ),
     array(
