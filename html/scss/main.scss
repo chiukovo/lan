@@ -1,0 +1,164 @@
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+@import "bootstrap/bootstrap";
+
+body {
+    background-color: #F2F2F2;
+}
+// #mainBody {
+//     max-width: 105rem + 1rem*2;
+//     padding: 0 1rem;
+//     margin: 0 auto;
+// }
+#header {
+    border: 1px solid red;
+    margin: 1rem 0;
+}
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1500px;
+    }
+}
+
+.js-slider {
+    position: relative;
+    img {
+        width: 100%;
+        min-width: 100%;
+    }
+    .js-slider-arrow {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        button {
+            float: left;
+            width: 100px;
+            height: 100px;
+            color: #fff;
+            border: 0;
+        }
+        .slider-left {
+            background-color: $gray-900;
+        }
+        .slider-right {
+            background-color: $yellow;
+        }
+    }
+}
+
+#ticket {
+    margin: 6rem 0;
+}
+.element {
+    margin-bottom: 3%;
+    transition: box-shadow 0.3s ease-in-out;
+    .element-body {
+        position: relative;
+        max-width: 360px;
+        font-size: 13px;
+        margin: 0 auto;
+    }
+    .element-img {
+        position: relative;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease-in-out;
+        img {
+            width: 100%;
+            max-width: 100%;
+            border-right: transparent
+        }
+        &:before {
+            content: '';
+            box-shadow: inset 0 0 0 0 $yellow;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 9;
+            opacity: 0.8;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+        &:hover {
+            &:before {
+                content: '';
+                box-shadow: inset 0 0 0 18px $yellow;
+            }
+        }
+    }
+    .element-title {
+        padding: 6px 0 4px;
+    }
+    .element-span {
+        position: absolute;
+        right: -6px;
+        bottom: 46px;
+        z-index: 10;
+        width: 44%;
+        height: 36px;
+        text-align: center;
+        line-height: 36px;
+        background: #f9ca3e;
+    }
+    .element-star {
+        display: inline-block;
+        background: #fff;
+        padding: 2px 6px;
+        border-radius: 5px;
+        cursor: pointer;
+        > i {
+            color: $yellow;
+            padding-right: 2px;
+        }
+        &:hover {
+            background-color: $yellow;
+            > i {
+                color: #fff;
+            }
+        }
+    }
+}
+
+#map {
+    width: 100%;
+    height: 380px;
+    background: image-url('not-use/map.png') center no-repeat;
+}
+
+#footer {
+    background-color: #1C1C1C;
+    font-size: 13px;
+    color: #fff;
+    padding: 50px 0;
+    img {
+        float: left;
+    }
+    .footer-infor {
+        float: left;
+        padding-left: 5%;
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+    }
+    .company-name {
+        font-size: 22px;
+        font-weight: bold;
+        color: $yellow;
+        margin-bottom: 1rem;
+    }
+    .copyright {
+        text-align: center;
+        color: #818181;
+        padding-top: 1rem;
+        margin-top: 2rem;
+        border-top: 1px solid rgba(0, 0, 0, .3);
+    }
+    @media (min-width: 1200px) {
+        padding: 100px 0;
+        .copyright {
+            border-top: 0;
+            padding-top: 0;
+            margin-top: 0;
+        }
+    }
+}
