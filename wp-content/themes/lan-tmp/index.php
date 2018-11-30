@@ -6,7 +6,17 @@
             <button class="slider-left"><i class="la la-arrow-left"></i></button>
             <button class="slider-right"><i class="la la-arrow-right"></i></button>
         </div>
-        <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
+        <div class="owl-carousel">
+            <div>
+                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
+            </div>
+            <div>
+                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
+            </div>
+            <div>
+                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
+            </div>
+        </div>
     </div>
 </div>
 <div id="infor">
@@ -60,4 +70,20 @@
     </div>
 </div>
 <div id="map"></div>
+<script>
+  $(document).ready(function() {
+    $('.owl-carousel').owlCarousel({
+      loop: true,
+      items: 1,
+      dots: false,
+    })
+
+    $('.js-slider-arrow .slider-left').click(function() {
+        $('.owl-carousel').trigger('prev.owl.carousel');
+    })
+    $('.js-slider-arrow .slider-right').click(function() {
+        $('.owl-carousel').trigger('next.owl.carousel');
+    })
+  })
+</script>
 <?php get_footer(); ?>

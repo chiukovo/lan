@@ -3,7 +3,11 @@
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/line-awesome.min.css" />
+    <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/main.css" />
+    <!-- javascript -->
+    <script src="<?php bloginfo('template_directory'); ?>/assets/js/jquery.min.js"></script>
+    <script src="<?php bloginfo('template_directory'); ?>/assets/js/owl.carousel.min.js"></script>
 </head>
 <body>
 <div id="mainBody">
