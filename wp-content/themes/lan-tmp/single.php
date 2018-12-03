@@ -1,6 +1,5 @@
 <!--include header-->
 <?php get_header(); ?>
-single post
 <?php while ( have_posts() ) : the_post();?>
     <div><?php the_title();?></div>
     <div><?php the_content();?></div>

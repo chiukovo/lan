@@ -1,89 +1,114 @@
 <!--include header-->
 <?php get_header(); ?>
-<div id="slider" class="js-slider">
-    <div class="container">
-        <div class="js-slider-arrow">
-            <button class="slider-left"><i class="la la-arrow-left"></i></button>
-            <button class="slider-right"><i class="la la-arrow-right"></i></button>
-        </div>
-        <div class="owl-carousel">
-            <div>
-                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
-            </div>
-            <div>
-                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
-            </div>
-            <div>
-                <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
-            </div>
-        </div>
-    </div>
-</div>
-<div id="infor">
-    <div class="container">
-        <div class="infor-one">
-            <div class="infor-one-title">How to keep up with the latest information</div>
-            <div class="infor-one-span">如何追蹤店家最新資訊?</div>
-        </div>
-        <div class="infor-more"></div>
-        <div class="infor-number">
-            <div class="infor-number-ticket">
-                <span>1,260,795</span>
-            </div>
-            <div class="infor-number-user">
-                <span>66,789</span>
-            </div>
-        </div>
-        <div class="infor-slogn">
-            <div class="button">JOIN US</div>
-            <div class="infor-slogn-title">即刻加入，立即享受最高折扣。</div>
-            <div class="infor-slogn-share">
-                <a href="">facebook</a>
-                <a href="">link@</a>
-                <a href="">instagram</a>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="ticket">
     <div class="ticket-wrap containers">
-        <div class="ticket-search">
-            <button class="btn-search">自訂搜尋店家條件</button>
-        </div>
         <div class="container">
+            <div class="ticket-search">
+                <button class="btn-search"><i class="la la-filter"></i>自訂搜尋店家條件</button>
+                <div class="ticket-search-wrap row" style="display: none">
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            最低消費
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">無低消</a>
+                            <a class="dropdown-item" href="javascript: void(0)">100元以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">150元以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">250元以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">350元以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">不設上限</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            地點
+                        </button>
+                        <div class="dropdown-menu">
+                           <a class="dropdown-item" href="javascript: void(0)">地點</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            最近捷運站
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">最近捷運站</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            營業時間
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">星期日</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期一</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期二</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期三</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期四</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期五</a>
+                            <a class="dropdown-item" href="javascript: void(0)">星期六</a>
+                            <a class="dropdown-item" href="javascript: void(0)">國定假日營業</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            座位數量
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">10個以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">20個以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">30個以內</a>
+                            <a class="dropdown-item" href="javascript: void(0)">31個以上</a>
+                            <a class="dropdown-item" href="javascript: void(0)">只開放外帶</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            優惠代碼
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">僅顯示有提供優惠代碼的店家</a>
+                            <a class="dropdown-item" href="javascript: void(0)">全部顯示</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            搜尋方式
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript: void(0)">以照片&簡介為優先搜尋條件</a>
+                            <a class="dropdown-item" href="javascript: void(0)">以地圖為優先搜尋條件</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <?php while ( have_posts() ) : the_post();?>
                 <div class="col-12 col-sm-6 col-md-4 element">
-                    <a href="<?php the_permalink();?>"></a>
+                    <a href="<?php the_permalink();?>">
                     <div class="element-body">
+                        <div class="element-span">粥品</div>
                         <div class="element-img">
                             <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/1.png" alt="<?php the_title();?>">
                         </div>
-                        <div class="element-span">粥品</div>
                         <div class="element-title"><?php the_title();?></div>
                         <div class="element-star"><i class="la la-star"></i>4.2(120)</div>
                     </div>
+                    </a>
                 </div>
                 <?php endwhile;?>
             </div>
         </div>
     </div>
 </div>
-<div id="map"></div>
+<div style="width:100%;height: 330px; overflow:hidden;">
+<iframe id="map" style="position:relative; top:-50px; border:none;" src="https://www.google.com/maps/d/u/0/embed?mid=1-Yutz5qjVKhymKIrkmB_Btejz-OKzNsj"></iframe>
+</div>
 <script>
-  $(document).ready(function() {
-    $('.owl-carousel').owlCarousel({
-      loop: true,
-      items: 1,
-      dots: false,
-    })
-
-    $('.js-slider-arrow .slider-left').click(function() {
-        $('.owl-carousel').trigger('prev.owl.carousel');
-    })
-    $('.js-slider-arrow .slider-right').click(function() {
-        $('.owl-carousel').trigger('next.owl.carousel');
-    })
-  })
+$(function() {
+    $('.btn-search').click(function(event) {
+        $('.ticket-search-wrap').toggle()
+    });
+})
 </script>
 <?php get_footer(); ?>

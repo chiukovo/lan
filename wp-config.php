@@ -22,7 +22,7 @@ define('DB_NAME', 'lan');
 define('DB_USER', 'root');
 
 /** MySQL 資料庫密碼，請更改 "password_here" */
-define('DB_PASSWORD', 'password');
+define('DB_PASSWORD', '');
 
 /** MySQL 主機位址 */
 define('DB_HOST', 'localhost');
