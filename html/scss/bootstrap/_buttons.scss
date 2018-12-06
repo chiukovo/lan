@@ -4,7 +4,7 @@
 // Base styles
 //
 
-.btn {
+.btn, button, [type="button"], [type="reset"], [type="submit"] {
   display: inline-block;
   font-weight: $btn-font-weight;
   text-align: center;
