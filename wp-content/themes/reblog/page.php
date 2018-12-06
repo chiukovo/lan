@@ -14,32 +14,32 @@
 
 get_header(); ?>
 <div class="wrapper singular-section page-section">
-	<?php while ( have_posts() ) : the_post(); 
+	<?php while ( have_posts() ) : the_post();
 		$reblog_page_featured_img = get_theme_mod( 'reblog_enable_single_page_featured_img', true ); ?>
 		<?php if ( has_post_thumbnail() && $reblog_page_featured_img ) : ?>
 		    <div class="single-featured-image">
 		        <?php the_post_thumbnail( 'full', array( 'alt' => the_title_attribute( 'echo=0' ) ) ); ?>
 		    </div><!-- .single-featured-image -->
 		<?php endif; ?>
-	    
+
 	    <header class="entry-header">
 	        <?php
 			if ( is_singular() ) :
 				the_title( '<h2 class="entry-title">', '</h2>' );
 			else :
 				the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-			endif;	        
+			endif;
 	        ?>
 	    </header>
     <?php endwhile; ?>
 
     <div id="primary" class="content-area">
 	    <main id="main" class="site-main" role="main">
-	    	<?php  
+	    	<?php
 	    	while ( have_posts() ) : the_post();
 
 				get_template_part( 'template-parts/content', 'page' );
-				
+
 				$post_pagination_enable = get_theme_mod( 'reblog_enable_single_page_pagination', false );
 				if ( $post_pagination_enable ) {
 					the_post_navigation( array(
@@ -60,7 +60,7 @@ get_header(); ?>
 
 			endwhile; // End of the loop.
 	    	?>
-	        
+
 	    </main><!-- #main -->
 	</div><!-- #primary -->
 

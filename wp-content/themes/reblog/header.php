@@ -22,7 +22,7 @@
 <body <?php body_class(); ?>>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'reblog' ); ?></a>
-    
+
     <div class="menu-overlay"></div>
 
     <header id="masthead" class="site-header" role="banner">
@@ -59,7 +59,7 @@
                     </div><!-- .site-branding-text -->
                 </div><!-- .site-branding -->
 
-                <?php 
+                <?php
                 $social_icons = '';
                 if ( has_nav_menu( 'social' ) ) :
                     $social_icons = '<div class="social-icons">'.
@@ -86,19 +86,19 @@
                         'container_id' => 'site-navigation',
                         'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s <li class="social-menu-item">' . $social_icons . '</li></ul>',
                     ) );
-                else: 
+                else:
                     if ( current_user_can( 'edit_theme_options' ) ) : ?>
                         <nav class="main-navigation" id="site-navigation">
                             <ul id="primary-menu" class="menu nav-menu">
                                 <li><a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"><?php echo esc_html__( 'Add a menu', 'reblog' );?></a></li>
                             </ul>
                         </nav>
-                    <?php endif; 
+                    <?php endif;
                 endif; ?>
 
                 <?php if ( has_nav_menu( 'social' ) ) : ?>
                     <div class="social-icons">
-                        <?php  
+                        <?php
                             wp_nav_menu( array(
                                 'theme_location' => 'social',
                                 'container' => false,
@@ -110,7 +110,7 @@
                             ) );
                         ?>
                     </div><!-- .social-icons -->
-                <?php endif; 
+                <?php endif;
 
                 $search_enable = get_theme_mod( 'reblog_show_search', true );
                 if ( $search_enable ) :
@@ -118,7 +118,7 @@
                     <div class="search-menu">
                         <a href="#">
                             <span class="screen-reader-text"><?php esc_html_e( 'search', 'reblog' ); ?></span>
-                            <?php 
+                            <?php
                             echo reblog_get_svg( array( 'icon' => 'search' ) );
                             echo reblog_get_svg( array( 'icon' => 'close' ) );
                             ?>
@@ -133,7 +133,7 @@
             <div id="social-navigation">
                 <?php if ( has_nav_menu( 'social' ) ) : ?>
                     <div class="social-icons">
-                        <?php  
+                        <?php
                             wp_nav_menu( array(
                                 'theme_location' => 'social',
                                 'container' => false,
@@ -145,7 +145,7 @@
                             ) );
                         ?>
                     </div><!-- .social-icons -->
-                <?php endif; 
+                <?php endif;
 
                 $search_enable = get_theme_mod( 'reblog_show_search', true );
                 if ( $search_enable ) :
@@ -153,7 +153,7 @@
                     <div id="search-menu">
                         <a href="#">
                             <span class="screen-reader-text"><?php esc_html_e( 'search', 'reblog' ); ?></span>
-                            <?php 
+                            <?php
                             echo reblog_get_svg( array( 'icon' => 'search' ) );
                             echo reblog_get_svg( array( 'icon' => 'close' ) );
                             ?>

@@ -6,19 +6,20 @@
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/line-awesome.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/owl.carousel.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/main.css" />
-        <?php wp_head(); ?>
+
         <!-- javascript -->
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/jquery.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/owl.carousel.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/popper.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/bootstrap.min.js"></script>
+        <?php wp_head(); ?>
         <style>
           .js-slider .js-slider-arrow {
             z-index: 100
           }
         </style>
     </head>
-    <body>
+    <body <?php body_class(); ?>>
       <div id="mainBody">
         <div class="container">
             <div id="header" class="clearfix">
