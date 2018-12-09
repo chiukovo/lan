@@ -3,6 +3,7 @@
     <head>
 
         <meta charset="<?php bloginfo( 'charset' ); ?>">
+        <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ekko-lightbox.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/line-awesome.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/owl.carousel.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/main.css" />
@@ -11,6 +12,7 @@
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/jquery.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/owl.carousel.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/popper.min.js"></script>
+        <script src="<?php bloginfo('template_directory'); ?>/assets/js/ekko-lightbox.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/bootstrap.min.js"></script>
         <?php wp_head(); ?>
         <style>
@@ -21,6 +23,14 @@
             color: #1C1C1C !important; 
           }
         </style>
+        <script>
+        $(function(){
+          $('.nav-open').click(function(e) {
+            console.log('in');
+            $('.nav-main').toggleClass('active');
+          });
+        });
+        </script>
     </head>
     <body <?php body_class(); ?>>
       <div id="mainBody">

@@ -13,8 +13,6 @@
 <div id="body">
 	<div class="container details">
 		<?php while ( have_posts() ) : the_post();?>
-			<!--標題-->
-		    <!-- <h1><?php the_title();?></h1> -->
 		    <!--店家名稱-->
 		    <h2 class="store-name shadow-none p-3 bg-light rounded font-weight-bold"><?php the_title() ?></h2>
 		    <div class="page-title p-3">店家資訊</div>
@@ -73,7 +71,11 @@
 			<div class="mb-3">
 				<div class="m-3">
 					<!--優惠內容照片-->
-					<div><img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>"></div>
+					<div>
+						<a href="<?php echo $pageData['sp_img_url'][0] ?>" data-toggle="lightbox">
+							<img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>">
+						</a>
+					</div>
 					<!--優惠內容-->
 					<div><?php echo $pageData['sp_content'][0] ?></div>
 				</div>
@@ -94,19 +96,31 @@
 				<!--店家簡述內容-->
 				<div class="store-content mb-3"><?php the_content();?></div>
 				<?php if ( ! empty($pageData['img1_url'][0])) {?>
-				<div><img src="<?php echo $pageData['img1_url'][0] ?>" alt="<?php the_title();?>"></div>
+				<div>
+					<a href="<?php echo $pageData['img1_url'][0] ?>" data-toggle="lightbox">
+						<img src="<?php echo $pageData['img1_url'][0] ?>" alt="<?php the_title();?>">
+					</a>
+				</div>
 				<?php } ?>
 				<!--照片1 敘述-->
 				<div><?php echo $pageData['img1_content'][0] ?></div>
 				<!--照片2-->
 				<?php if ( ! empty($pageData['img2_url'][0])) {?>
-				<div><img src="<?php echo $pageData['img2_url'][0] ?>" alt="<?php the_title();?>"></div>
+				<div>
+					<a href="<?php echo $pageData['img2_url'][0] ?>" data-toggle="lightbox">
+						<img src="<?php echo $pageData['img2_url'][0] ?>" alt="<?php the_title();?>">
+					</a>
+				</div>
 				<?php } ?>
 				<!--照片2 敘述-->
 				<div><?php echo $pageData['img2_content'][0] ?></div>
 				<!--照片3-->
 				<?php if ( ! empty($pageData['img3_url'][0])) {?>
-				<div><img src="<?php echo $pageData['img3_url'][0]; ?>" alt="<?php the_title();?>"></div>
+				<div>
+					<a href="<?php echo $pageData['img3_url'][0] ?>" data-toggle="lightbox">
+						<img src="<?php echo $pageData['img3_url'][0] ?>" alt="<?php the_title();?>">
+					</a>
+				</div>
 				<?php } ?>
 				<!--照片3 敘述-->
 				<div><?php echo $pageData['img3_content'][0]; ?></div>
@@ -130,4 +144,12 @@
 		</div>
 	</div>
 </div>
+<script>
+$(function() {
+	$(document).on('click', '[data-toggle="lightbox"]', function(e) {
+        e.preventDefault();
+        $(this).ekkoLightbox();
+    });
+});
+</script>
 <?php get_footer(); ?>
