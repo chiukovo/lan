@@ -117,7 +117,11 @@ body {
     }
 }
 #title {
-    height: 118px;
+    overflow: hidden;
+    img {
+        width: 100%;
+        min-width: 100%;
+    }
 }
 #slider {
     @media screen and (max-width: 480px) {
@@ -353,4 +357,32 @@ select {
     bottom: -1.6rem;
     font-style: inherit !important;
     color: #a9adb0 !important;
+}
+
+
+.details {
+    .page-title {
+        color: #342e36;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 1;
+        border-bottom: 1px solid #e0dfdf;
+    }
+    .store-content p {
+        margin-bottom: 0 !important;
+        img {
+            margin: 1rem 0;
+        }
+    }
+    img {
+        max-height: 360px;
+    }
+}
+.del-btn-prev, .del-btn-next {
+    background: #efefef;
+    border-radius: 0;
+    &:hover {
+        color: #fff;
+        background-color: #080c21;
+    }
 }

@@ -37,8 +37,10 @@ function getPostsDtails($id)
 		if ( isset($result[$imgKey])) {
 			foreach ($result[$imgKey] as $info) {
 				$fileName = get_post_meta($info, '_wp_attached_file');
-				foreach ($fileName as $dt) {
-					$result[$imgKey . '_url'][] = $uploadDir['baseurl'] . '/' . $dt;
+				if ( ! empty($fileName)) {
+					foreach ($fileName as $dt) {
+						$result[$imgKey . '_url'][] = $uploadDir['baseurl'] . '/' . $dt;
+					}
 				}
 			}
 		}

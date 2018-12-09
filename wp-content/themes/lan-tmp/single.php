@@ -1,67 +1,133 @@
 <!--include header-->
 <?php get_header(); ?>
-<div>
+<div id="title">
     <?php $pageData = getPostsDtails(get_the_ID());?>
+    <?php if ( $pageData['banner_img_url'][0] != '' ) {?>
     <img src="<?php echo $pageData['banner_img_url'][0] ?>" alt="<?php the_title();?>">
+    <?php } else { ?>
+    <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
+    <?php } ?>
+    
+    
 </div>
 <div id="body">
-	<div class="container">
+	<div class="container details">
 		<?php while ( have_posts() ) : the_post();?>
-			<!--òÀÓ}-->
-		    <div><?php the_title();?></div>
-		    <!--µÍº“√˚∑Q-->
-		    <div><?php echo $pageData['store_name'][0] ?></div>
-			<!--Îä‘í-->
-			<div><?php echo $pageData['phone'][0] ?></div>
-			<!--πŸ∑ΩæW’æ-->
-			<div><?php echo $pageData['web'][0] ?></div>
-			<!--FB-->
-			<div><?php echo $pageData['fb'][0] ?></div>
-			<!--ig-->
-			<div><?php echo $pageData['ig'][0] ?></div>
-			<!--line-->
-			<div><?php echo $pageData['line'][0] ?></div>
-			<!--email-->
-			<div><?php echo $pageData['email'][0] ?></div>
-			<!--∆‰N¬ìΩj∑Ω Ω-->
-			<div><?php echo $pageData['other_contact'][0] ?></div>
-			<!--◊ÓµÕœ˚ŸM-->
-			<div><?php echo $pageData['min'][0] ?></div>
-			<!--µÍº“µÿ÷∑-->
-			<div><?php echo $pageData['address'][0] ?></div>
-			<!--†IòI»’∆⁄-->
-			<div>
-				<?php foreach($pageData['live_time'] as $date) { ?>
-				<?php echo $date ?>
-				<?php } ?>
+			<!--Ê®ôÈ°å-->
+		    <!-- <h1><?php the_title();?></h1> -->
+		    <!--Â∫óÂÆ∂ÂêçÁ®±-->
+		    <h2 class="store-name shadow-none p-3 bg-light rounded font-weight-bold"><?php the_title() ?></h2>
+		    <div class="page-title p-3">Â∫óÂÆ∂Ë≥áË®ä</div>
+		    <div class="mb-3">
+		    	<ul class="mt-3">
+		    		<?php if ( ! empty($pageData['phone'][0])) {?>
+		    		<li>
+		    			<!--ÈõªË©±-->
+	    				<div class="phone"><i class="la la-phone"></i> <?php echo $pageData['phone'][0] ?></div>
+		    		</li>
+		    		<?php } ?>
+		    		<?php if ( ! empty($pageData['email'][0])) {?>
+		    		<li>
+		    			<!--email-->
+	    				<div class="email"><?php echo $pageData['email'][0] ?></div>
+		    		</li>
+		    		<?php } ?>
+		    		<?php if ( ! empty($pageData['other_contact'][0])) {?>
+		    		<li>
+		    			<!--ÂÖ∂È§òËÅØÁµ°ÊñπÂºè-->
+		    			<div class="other-contact"><?php echo $pageData['other_contact'][0] ?></div>
+		    		</li>
+		    		<?php } ?>
+		    		<?php if ( ! empty($pageData['address'][0])) {?>
+		    		<li>
+			    		<!--Â∫óÂÆ∂Âú∞ÂùÄ-->
+						<div class="address"><?php echo $pageData['address'][0] ?></div>
+		    		</li>
+		    		<?php } ?>
+		    	</ul>
+		    </div>
+			<div class="page-title p-3">ÁáüÊ•≠ÊôÇÈñì</div>
+			<div class="mb-3">
+				<div class="m-3">
+					<!--ÁáüÊ•≠Êó•Êúü-->
+					<div class="live-time">ÁáüÊ•≠Êó•Ôºö
+						<?php foreach($pageData['live_time'] as $date) { ?>
+						<?php echo $date ?>
+						<?php } ?>
+					</div>
+					<!--ÁáüÊ•≠ÊôÇÈñì-->
+					<div class="live-time-dt">ÁáüÊ•≠ÊôÇÈñìÔºö<?php echo $pageData['live_time_dt'][0] ?></div>
+				</div>
 			</div>
-			<!--†IòIïrÈg-->
-			<div><?php echo $pageData['live_time_dt'][0] ?></div>
-			<!--◊˘Œªîµ¡ø-->
-			<div><?php echo $pageData['site_num'][0] ?></div>
-			<!--µÍº“∫Ü ˆÉ»»›-->
-			<div><?php the_content();?></div>
-			<!--Éûª›É»»›’’∆¨-->
-			<div><img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>"></div>
-			<!--Éûª›É»»›-->
-			<div><?php echo $pageData['sp_content'][0] ?></div>
-			<!--’’∆¨1-->
-			<div><img src="<?php echo $pageData['img1_url'][0] ?>" alt="<?php the_title();?>"></div>
-			<!--’’∆¨1 î¢ ˆ-->
-			<div><?php echo $pageData['img1_content'][0] ?></div>
-			<!--’’∆¨2-->
-			<div><img src="<?php echo $pageData['img2_url'][0] ?>" alt="<?php the_title();?>"></div>
-			<!--’’∆¨2 î¢ ˆ-->
-			<div><?php echo $pageData['img2_content'][0] ?></div>
-			<!--’’∆¨3-->
-			<div><img src="<?php echo $pageData['img3_url'][0]; ?>" alt="<?php the_title();?>"></div>
-			<!--’’∆¨3 î¢ ˆ-->
-			<div><?php echo $pageData['img3_content'][0]; ?></div>
+
+			<div class="page-title p-3">ÂÖ∂‰ªñË≥áË®ä</div>
+			<div class="mb-3">
+				<div class="m-3">
+					<!--ÊúÄ‰ΩéÊ∂àË≤ª-->
+					<div class="min">ÊúÄ‰ΩéÊ∂àË≤ªÔºö<?php echo $pageData['min'][0] ?></div>
+					<!--Â∫ß‰ΩçÊï∏Èáè-->
+					<div class="site-num">Â∫óÂÖßÂ∫ß‰ΩçÔºö<?php echo $pageData['site_num'][0] ?></div>
+				</div>
+			</div>
+			<div class="page-title p-3">ÂÑ™ÊÉ†ÂÖßÂÆπ</div>
+			<div class="mb-3">
+				<div class="m-3">
+					<!--ÂÑ™ÊÉ†ÂÖßÂÆπÁÖßÁâá-->
+					<div><img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>"></div>
+					<!--ÂÑ™ÊÉ†ÂÖßÂÆπ-->
+					<div><?php echo $pageData['sp_content'][0] ?></div>
+				</div>
+			</div>
+			
+
+			<div class="page-title p-3">Â∫óÂÆ∂‰ªãÁ¥π</div>
+		    <div class="p-3">
+				<!--ÂÆòÊñπÁ∂≤Á´ô-->
+				<!-- <div class="web"><?php echo $pageData['web'][0] ?></div> -->
+				<!--FB-->
+				<!-- <div class="fb"><?php echo $pageData['fb'][0] ?></div> -->
+				<!--ig-->
+				<!-- <div class="ig"><?php echo $pageData['ig'][0] ?></div> -->
+				<!--line-->
+				<!-- <div class="line"><?php echo $pageData['line'][0] ?></div> -->
+				<!--ÁÖßÁâá1-->
+				<!--Â∫óÂÆ∂Á∞°Ëø∞ÂÖßÂÆπ-->
+				<div class="store-content mb-3"><?php the_content();?></div>
+				<?php if ( ! empty($pageData['img1_url'][0])) {?>
+				<div><img src="<?php echo $pageData['img1_url'][0] ?>" alt="<?php the_title();?>"></div>
+				<?php } ?>
+				<!--ÁÖßÁâá1 ÊïòËø∞-->
+				<div><?php echo $pageData['img1_content'][0] ?></div>
+				<!--ÁÖßÁâá2-->
+				<?php if ( ! empty($pageData['img2_url'][0])) {?>
+				<div><img src="<?php echo $pageData['img2_url'][0] ?>" alt="<?php the_title();?>"></div>
+				<?php } ?>
+				<!--ÁÖßÁâá2 ÊïòËø∞-->
+				<div><?php echo $pageData['img2_content'][0] ?></div>
+				<!--ÁÖßÁâá3-->
+				<?php if ( ! empty($pageData['img3_url'][0])) {?>
+				<div><img src="<?php echo $pageData['img3_url'][0]; ?>" alt="<?php the_title();?>"></div>
+				<?php } ?>
+				<!--ÁÖßÁâá3 ÊïòËø∞-->
+				<div><?php echo $pageData['img3_content'][0]; ?></div>
+		    </div>
 		<?php endwhile;?>
-		<!--…œ“ª∆™-->
-		<?php previous_post_link(); ?>
-		<!--œ¬“ª∆™-->
-		<?php next_post_link(); ?>
+		<div class="arrow-wrap row m-3">
+			<?php
+			$prev_post = get_previous_post();
+			if (!empty( $prev_post )): ?>
+			 <a class="del-btn-prev btn col mr-1 p-3" href="<?php echo $prev_post->guid ?>">
+				<< <?php echo $prev_post->post_title ?>
+			</a>
+			<?php endif ?>
+			<?php
+			$next = get_next_post();
+			if (!empty( $next )): ?>
+			 <a class="del-btn-next btn col mr-1 p-3" href="<?php echo $next->guid ?>">
+				<?php echo $next->post_title ?> >>
+			</a>
+			<?php endif ?>
+		</div>
 	</div>
 </div>
 <?php get_footer(); ?>

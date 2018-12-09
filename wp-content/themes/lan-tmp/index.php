@@ -93,7 +93,7 @@
                       <img src="<?php echo $data['main_img_url'][0];?>">
                   </div>
                   <div class="element-title"><?php the_title();?></div>
-                  <div class="element-star"><i class="la la-star"></i>4.2(120)</div>
+                  <div class="element-star"><i class="la la-star"></i>4.2</div>
               </div>
               </a>
           </div>
