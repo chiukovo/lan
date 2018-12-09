@@ -84,12 +84,13 @@
     <div class="container">
         <div class="row">
           <?php while ( have_posts() ) : the_post();?>
+          <?php $data = getPostsDtails(get_the_ID());?>
           <div class="col-12 col-sm-6 col-md-4 element">
               <a href="<?php the_permalink();?>">
               <div class="element-body">
-                  <div class="element-span">粥品</div>
+                  <div class="element-span"><?php echo $data['res_type'][0];?></div>
                   <div class="element-img">
-                      <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/1.png" alt="<?php the_title();?>">
+                      <img src="<?php echo $data['main_img_url'][0];?>">
                   </div>
                   <div class="element-title"><?php the_title();?></div>
                   <div class="element-star"><i class="la la-star"></i>4.2(120)</div>

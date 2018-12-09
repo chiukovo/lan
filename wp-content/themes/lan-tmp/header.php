@@ -50,6 +50,7 @@
                 </nav>
             </div>
         </div>
+        <?php if (is_home()) { ?>
         <div id="title">
           <div id="slider" class="owl-carousel">
               <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
@@ -83,3 +84,4 @@
               })
             </script>
         </div>
+        <?php } ?>
