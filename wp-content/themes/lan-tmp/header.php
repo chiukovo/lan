@@ -25,8 +25,7 @@
         </style>
         <script>
         $(function(){
-          $('.nav-open').click(function(e) {
-            console.log('in');
+          $('.nav-open, .nav-main').click(function(e) {
             $('.nav-main').toggleClass('active');
           });
         });
