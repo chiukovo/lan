@@ -19,7 +19,7 @@
 
     <form name="loginform" class="wpuf-login-form" id="loginform" action="<?php echo $action_url; ?>" method="post">
         <p>
-            <label for="wpuf-user_login"><?php _e( 'Username or Email', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-user_login">店家ID</label>
             <input type="text" name="log" id="wpuf-user_login" class="input" value="" size="20" />
         </p>
         <p>
@@ -38,7 +38,7 @@
 
         <p class="forgetmenot">
             <input name="rememberme" type="checkbox" id="wpuf-rememberme" value="forever" />
-            <label for="wpuf-rememberme"><?php esc_attr_e( 'Remember Me', 'wp-user-frontend' ); ?></label>
+            <label for="wpuf-rememberme">記住我的資訊</label>
         </p>
 
         <p class="submit">

@@ -280,7 +280,7 @@ class WPUF_Simple_Login {
         }
 
         if ( $args['lostpassword'] ) {
-            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'lostpassword' ), __( 'Lost Password', 'wp-user-frontend' ) );
+            $links[] = sprintf( '<a href="%s">%s</a>', $this->get_action_url( 'lostpassword' ), __( '忘記密碼', 'wp-user-frontend' ) );
         }
 
         return implode( ' | ', $links );
