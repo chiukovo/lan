@@ -7,8 +7,8 @@
     <?php } else { ?>
     <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
     <?php } ?>
-    
-    
+
+
 </div>
 <div id="body">
 	<div class="container details">
@@ -52,6 +52,9 @@
 						<?php foreach($pageData['live_time'] as $date) { ?>
 						<?php echo $date ?>
 						<?php } ?>
+						<?php if ( ! empty($pageData['live_time_ex'][0])) { ?>
+						備註：<?php echo $pageData['live_time_ex'][0] ?>
+						<?php } ?>
 					</div>
 					<!--營業時間-->
 					<div class="live-time-dt">營業時間：<?php echo $pageData['live_time_dt'][0] ?></div>
@@ -80,7 +83,7 @@
 					<div><?php echo $pageData['sp_content'][0] ?></div>
 				</div>
 			</div>
-			
+
 
 			<div class="page-title p-3">店家介紹</div>
 		    <div class="p-3">

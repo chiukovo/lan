@@ -695,7 +695,7 @@
             <div v-html="get_term_checklist()"></div>
         </div>
     </div>
-    
+
 
     <input
         v-if="'text' === field.type"
