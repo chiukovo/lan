@@ -386,3 +386,46 @@ select {
         background-color: #080c21;
     }
 }
+
+#login {
+    #body {
+        box-shadow: none;
+        background-color: #f2f2f2;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .wpuf-submit {
+        margin-top: 1rem;
+        [type="submit"] {
+            width: 100%;
+            background-color: #485480;
+            &:hover {
+                background-color: darken(#485480, 10%);
+            }
+        }
+    }
+}
+.wpuf-login-form {
+    width: 380px;
+    margin: 3rem auto 0;
+    border: 1px solid #f2f2f2;
+    padding: 2rem;
+    border-radius: 8px;
+    background: #fff;
+}
+.login-link {
+    display: flex;
+    justify-content: space-between;
+    width: 380px;
+    text-align: center;
+    margin: 0 auto 3rem;
+    padding: 1rem 1px;
+    color: #f2f2f2;
+    > a {
+        display: block;
+        background-color: #e6e6e6;
+        width: 49%;
+        padding: 5px 6px;
+        color: #080c21;
+        border-radius: 29px;
+    }
+}

@@ -9049,4 +9049,47 @@ select {
   background-color: #080c21;
 }
 
+#login #body {
+  box-shadow: none;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #e8e8e8;
+}
+#login .wpuf-submit {
+  margin-top: 1rem;
+}
+#login .wpuf-submit [type="submit"] {
+  width: 100%;
+  background-color: #485480;
+}
+#login .wpuf-submit [type="submit"]:hover {
+  background-color: #363f5f;
+}
+
+.wpuf-login-form {
+  width: 380px;
+  margin: 3rem auto 0;
+  border: 1px solid #f2f2f2;
+  padding: 2rem;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.login-link {
+  display: flex;
+  justify-content: space-between;
+  width: 380px;
+  text-align: center;
+  margin: 0 auto 3rem;
+  padding: 1rem 1px;
+  color: #f2f2f2;
+}
+.login-link > a {
+  display: block;
+  background-color: #e6e6e6;
+  width: 49%;
+  padding: 5px 6px;
+  color: #080c21;
+  border-radius: 29px;
+}
+
 /*# sourceMappingURL=main.css.map */

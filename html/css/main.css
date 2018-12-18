@@ -8779,6 +8779,10 @@ body {
   }
 }
 
+#title {
+  height: 118px;
+}
+
 @media screen and (max-width: 480px) {
   #slider {
     display: none;
@@ -9013,6 +9017,16 @@ select {
   bottom: -1.6rem;
   font-style: inherit !important;
   color: #a9adb0 !important;
+}
+
+.login {
+  width: 380px;
+  margin: 40px auto;
+  border: 1px solid #f2f2f2;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+  background: #fff;
 }
 
 /*# sourceMappingURL=main.css.map */
