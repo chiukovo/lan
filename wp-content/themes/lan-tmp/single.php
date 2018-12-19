@@ -1,5 +1,55 @@
 <!--include header-->
 <?php get_header(); ?>
+<style>
+.modal-content {
+	text-align: center;
+}
+.end {
+  color: #333333;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  margin: 10px;
+  position: relative;
+  font-weight: 300;
+  font-size: 16px;
+}
+.coupon {
+  color: #333333;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+  font-size: 50px;
+  border-radius: 5px;
+  border: 3px dashed black;
+  height: 120px;
+  line-height: 120px;
+  width: 70%;
+  font-weight: 700;
+}
+.finish {
+  cursor: pointer;
+  border-radius: 20px;
+  margin: auto;
+  background: none;
+  color: #333333;
+  text-transform: uppercase;
+  border: 1px solid #26a6c0;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 1px;
+  width: 180px;
+  height: 50px;
+  transition: all 0.3s ease;
+}
+.finish:hover {
+  background: #26a6c0;
+  color: white;
+  border: 1px solid #2294aa;
+}
+.modal-footer {
+	text-align: center;
+}
+</style>
 <div id="title">
     <?php $pageData = getPostsDtails(get_the_ID());?>
     <?php if ( $pageData['banner_img_url'][0] != '' ) {?>
@@ -7,8 +57,6 @@
     <?php } else { ?>
     <img src="<?php bloginfo('template_directory'); ?>/assets/image/not-use/slider.png" alt="">
     <?php } ?>
-
-
 </div>
 <div id="body">
 	<div class="container details">
@@ -74,13 +122,34 @@
 			<div class="mb-3">
 				<div class="m-3">
 					<!--優惠內容照片-->
-					<div>
+					<div style="margin-bottom: 30px">
 						<a href="<?php echo $pageData['sp_img_url'][0] ?>" data-toggle="lightbox">
 							<img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>">
 						</a>
 					</div>
-					<!--優惠內容-->
-					<div><?php echo $pageData['sp_content'][0] ?></div>
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#coupon">點選查看優惠券</button>
+					<!-- Modal -->
+					<div class="modal fade bd-example-modal-lg" id="coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					  <div class="modal-dialog modal-lg">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLongTitle"><?php the_title() ?> 專屬優惠券</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <!--優惠內容-->
+					        <div class="coupon">BURBUR7878</div>
+					        <div class="end"><?php echo $pageData['sp_content'][0] ?></div>
+					      </div>
+					      <div class="modal-footer">
+					      	<button class="finish">下載折扣代碼</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
 				</div>
 			</div>
 
