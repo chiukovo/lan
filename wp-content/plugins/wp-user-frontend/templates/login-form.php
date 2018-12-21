@@ -28,13 +28,13 @@
         </div>
         <div class="form-group">
             <div class="wpuf-label">
-                <label for="wpuf-user_pass"><?php _e( 'Password', 'wp-user-frontend' ); ?></label>
+                <label for="wpuf-user_pass">密碼</label>
             </div>
             <div class="wpuf-fields">
                 <input type="password" name="pwd" id="wpuf-user_pass" class="input" value="" size="20" />
             </div>
         </div>
-        
+
         <?php $recaptcha = wpuf_get_option( 'login_form_recaptcha', 'wpuf_profile', 'off'); ?>
         <?php if( $recaptcha == 'on' ) : ?>
             <p >
@@ -49,7 +49,7 @@
             <label for="wpuf-rememberme">記住我的資訊</label>
         </div>
         <div class="wpuf-submit submit">
-            <input type="submit" name="wp-submit" id="wp-submit" value="<?php esc_attr_e( 'Log In', 'wp-user-frontend' ); ?>" />
+            <input type="submit" name="wp-submit" id="wp-submit" value="登入" />
             <input type="hidden" name="redirect_to" value="<?php echo wp_get_referer() ?>" />
             <input type="hidden" name="wpuf_login" value="true" />
             <input type="hidden" name="action" value="login" />
@@ -60,10 +60,8 @@
         </p>
     </form>
     <div class="login-link">
-        <?php echo wpuf()->login->get_action_links( array( 'login' => false ) ); ?>
+        <a href="<?php echo get_home_url(); ?>/create/">註冊</a> | <a href="<?php echo get_home_url(); ?>/login/?action=lostpassword">忘記密碼</a>
     </div>
-    
-
     <script>
         $('html').attr('id', 'login');
     </script>

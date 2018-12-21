@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <meta charset="<?php bloginfo( 'charset' ); ?>">
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/ekko-lightbox.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/line-awesome.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/owl.carousel.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/main.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
         <!-- javascript -->
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/jquery.min.js"></script>
@@ -21,6 +21,11 @@
           }
           .navigation .dropdown-item {
             color: #1C1C1C !important;
+          }
+          .list-unstyled li {
+              width: 45%;
+              margin: auto;
+              text-align: left;
           }
         </style>
         <script>
@@ -39,11 +44,11 @@
                 <button class="nav-open"><i class="la la-bars"></i></button>
                 <nav class="nav-main ">
                   <a href="<?php echo get_home_url(); ?>/about">關於我們</a>
-                  <a href="<?php echo get_home_url('about'); ?>/offer">所有好康優惠代碼</a>
-                  <a href="<?php echo get_home_url('about'); ?>/download-offer">如何下載優惠代碼?</a>
-                  <a href="<?php echo get_home_url('about'); ?>/recommend">推薦您喜歡的店家給我們</a>
+                  <a href="<?php echo get_home_url(); ?>/offer">所有好康優惠代碼</a>
+                  <a href="<?php echo get_home_url(); ?>/download-offer">如何下載優惠代碼?</a>
+                  <a href="<?php echo get_home_url(); ?>/recommend">推薦您喜歡的店家給我們</a>
                   <?php if ( ! is_user_logged_in()) {?>
-                  <a href="<?php echo get_home_url('create'); ?>/create">店家註冊</a>
+                  <a href="<?php echo get_home_url(); ?>/registered">店家註冊</a>
                   <a href="<?php echo get_home_url(); ?>/login">店家登入</a>
                   <?php } else { ?>
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

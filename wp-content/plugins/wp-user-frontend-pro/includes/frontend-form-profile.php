@@ -270,7 +270,8 @@ class WPUF_Frontend_Form_Profile extends WPUF_Render_Form {
                 } elseif ( $form_settings['redirect_to'] == 'url' ) {
                     $redirect_to = $form_settings['url'];
                 } elseif ( $form_settings['redirect_to'] == 'same' ) {
-                    $show_message = true;
+                    //$show_message = true;
+                    $redirect_to = home_url() . $form_settings['url'];
                 } else {
                     $redirect_to = get_permalink( $post_id );
                 }
