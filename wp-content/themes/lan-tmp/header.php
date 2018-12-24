@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/line-awesome.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/owl.carousel.min.css" />
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/css/main.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
         <!-- javascript -->
@@ -14,6 +15,7 @@
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/popper.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/ekko-lightbox.min.js"></script>
         <script src="<?php bloginfo('template_directory'); ?>/assets/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.js"></script>
         <?php wp_head(); ?>
         <style>
           .wpuf-info {

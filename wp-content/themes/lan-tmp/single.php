@@ -126,30 +126,32 @@
 						<a href="<?php echo $pageData['sp_img_url'][0] ?>" data-toggle="lightbox">
 							<img src="<?php echo $pageData['sp_img_url'][0] ?>" alt="<?php the_title();?>">
 						</a>
+            <p class="red">★請利用下方連結到 輕鬆取 Easy Get ! 的 Facebook粉絲團按讚、或追蹤Instagram、或加我們的 LINE為好友(至少完成一項)，
+            並填入基本資料按下送出後就能順利取得優惠代碼喔！</p>
 					</div>
-					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#coupon">點選查看優惠券</button>
-					<!-- Modal -->
-					<div class="modal fade bd-example-modal-lg" id="coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-lg">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLongTitle"><?php the_title() ?> 專屬優惠券</h5>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div class="modal-body">
-					        <!--優惠內容-->
-					        <div class="coupon">BURBUR7878</div>
-					        <div class="end"><?php echo $pageData['sp_content'][0] ?></div>
-					      </div>
-					      <div class="modal-footer">
-					      	<button class="finish">下載折扣代碼</button>
-					      </div>
-					    </div>
-					  </div>
-					</div>
+          <!--fb-->
+          <div>
+            <script>(function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v3.2';
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+            <div class="fb-page"
+              data-href="https://www.facebook.com/facebook"
+              data-width="380"
+              data-hide-cover="false"
+              data-show-facepile="false"></div>
+          </div>
+          <!--fb end-->
+          <!--ig-->
+          <!--ig end-->
+          <!--line-->
+          <!--line end-->
+          <a href="https://line"></a>
+          <!-- Button trigger modal -->
+          <button id="getCoupon" type="button" class="btn btn-danger btn-lg">立即取得優惠代碼</button>
 				</div>
 			</div>
 
@@ -216,11 +218,90 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><?php the_title() ?> 專屬優惠券</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--優惠內容-->
+        <div class="coupon">BURBUR7878</div>
+        <div class="end"><?php echo $pageData['sp_content'][0] ?></div>
+      </div>
+      <div class="modal-footer">
+        <button class="finish">下載折扣代碼</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 $(function() {
 	$(document).on('click', '[data-toggle="lightbox"]', function(e) {
         e.preventDefault();
         $(this).ekkoLightbox();
+    });
+
+    $('#getCoupon').click(function() {
+        Swal.mixin({
+          input: 'text',
+          confirmButtonText: '下一步 &rarr;',
+          cancelButtonText: '關閉',
+          showCancelButton: true,
+          allowOutsideClick: false,
+          progressSteps: ['1','2','3']
+        }).queue([
+          {
+            title: '姓名',
+            text: '請填入真實姓名'
+          },
+          {
+            title: '手機號碼',
+          },
+          {
+            title: 'E-MAIL',
+            text: '優惠代碼將會寄到您的信箱 請正確填寫'
+          },
+        ]).then((result) => {
+          if (result.value) {
+            var check = true;
+            var msg = '';
+            result.value.forEach(function(target, key) {
+              if ( key == 0 ) {
+                msg = '姓名尚未填寫';
+              } else if ( key == 1 ) {
+                msg = '手機號碼尚未填寫';
+              } else {
+                msg = 'E-MAIL尚未填寫';
+              }
+
+              if ( target == '' ) {
+                check = false;
+              }
+            });
+
+            if ( ! check ) {
+              Swal({
+                type: 'error',
+                title: '很抱歉!',
+                text: msg,
+                confirmButtonText: '關閉'
+              })
+            } else {
+              Swal({
+                type: 'success',
+                title: '恭喜您!',
+                text: '優惠代碼已發送到您的信箱! ^__^',
+                confirmButtonText: '關閉'
+              })
+            }
+          }
+        })
     });
 });
 </script>
