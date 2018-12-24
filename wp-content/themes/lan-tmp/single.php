@@ -254,11 +254,17 @@ $(function() {
           cancelButtonText: '關閉',
           showCancelButton: true,
           allowOutsideClick: false,
-          progressSteps: ['1','2','3']
+          progressSteps: ['1','2','3','4','5']
         }).queue([
           {
             title: '姓名',
             text: '請填入真實姓名'
+          },
+          {
+            title: '預計使用日期',
+          },
+          {
+            title: '預計使用人數',
           },
           {
             title: '手機號碼',
@@ -274,13 +280,13 @@ $(function() {
             result.value.forEach(function(target, key) {
               if ( key == 0 ) {
                 msg = '姓名尚未填寫';
-              } else if ( key == 1 ) {
+              } else if ( key == 3 ) {
                 msg = '手機號碼尚未填寫';
-              } else {
+              } else if ( key == 4 ) {
                 msg = 'E-MAIL尚未填寫';
               }
 
-              if ( target == '' ) {
+              if ( target == '' && ( key == 0 || key == 3 || key == 4 )) {
                 check = false;
               }
             });
