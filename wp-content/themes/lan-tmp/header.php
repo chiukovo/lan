@@ -57,7 +57,9 @@
                     <i class="la la-user"></i> <b style="color: #fff41c;"><?php echo wp_get_current_user()->user_login; ?></b> 您已登入
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <?php if (count_user_posts(get_current_user_id()) == 0) { ?>
                     <a class="dropdown-item" href="<?php echo get_home_url(); ?>/文章新增/">文章發布</a>
+                    <?php } ?>
                     <a class="dropdown-item" href="<?php echo get_home_url(); ?>/儀表盤/">文章編輯</a>
                     <a class="dropdown-item" href="<?php echo get_home_url(); ?>/create/">店家帳號資訊</a>
                     <a class="dropdown-item" href="<?php echo get_home_url(); ?>/登錄__trashed-2/?action=logout">登出</a>

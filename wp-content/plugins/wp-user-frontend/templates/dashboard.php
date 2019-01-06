@@ -3,7 +3,20 @@
     <h2 class="page-head">
         <span class="colour"><?php printf( __( "%s's Dashboard", 'wp-user-frontend' ), $userdata->display_name ); ?></span>
     </h2>
-
+    <h5>謝謝您完成了上傳資訊的步驟，我們會由專員儘速替您審閱資訊，確認內容無誤後，就會替您公開在首頁中囉!</h5>
+    <hr>
+    狀態說明:
+    <table>
+        <tr>
+            <td width="100px"><span style="color:#33CC33;">在線</span></td>
+            <td>上線中</td>
+        </tr>
+        <tr>
+            <td width="100px"><span style="color:#C00202;">正在等待批准</span></td>
+            <td>審核中</td>
+        </tr>
+    </table>
+    <hr>
     <?php if ( wpuf_get_option( 'show_post_count', 'wpuf_dashboard', 'on' ) == 'on' ) { ?>
         <?php if ( !empty( $post_type_obj )): ?>
             <div class="post_count">
@@ -14,7 +27,6 @@
                         $labels[] = $post_type_name->label;
                     }
                 }
-                printf( __( 'You have created <span>%d</span> (%s)', 'wp-user-frontend' ), $dashboard_query->found_posts, implode( ', ', $labels ) );
             ?>
             </div>
         <?php endif ?>

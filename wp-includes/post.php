@@ -5733,14 +5733,14 @@ function get_posts_by_author_sql( $post_type, $full = true, $post_author = null,
 		if ( false === $public_only ) {
 			if ( $cap ) {
 				// Does the user have the capability to view private posts? Guess so.
-				$post_status_sql .= " OR post_status = 'private'";
+				$post_status_sql .= " OR post_status = 'private' OR post_status = 'pending'";
 			} elseif ( is_user_logged_in() ) {
 				// Users can view their own private posts.
 				$id = get_current_user_id();
 				if ( null === $post_author || ! $full ) {
-					$post_status_sql .= " OR post_status = 'private' AND post_author = $id";
+					$post_status_sql .= " OR post_status = 'private' OR post_status = 'pending' AND post_author = $id";
 				} elseif ( $id == (int) $post_author ) {
-					$post_status_sql .= " OR post_status = 'private'";
+					$post_status_sql .= " OR post_status = 'private' OR post_status = 'pending'";
 				} // else none
 			} // else none
 		}
